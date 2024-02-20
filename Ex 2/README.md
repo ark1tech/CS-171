@@ -1,3 +1,5 @@
+# Basics and Introduction
+
 ### Write Coq code for any of the following. You may want to write definitions for data types (i.e. bool / nat) in your code before writing code for these. For more details, you may check the Basics / Induction modules (particularly for #2).  Numbers 1 to 4 are taken from Basics, while 5 to 8 are taken from Induction.
 
 - `Theorem plus_id_exercise : ∀ n m o : nat, n = m → m = o → n + m = m + o.`
