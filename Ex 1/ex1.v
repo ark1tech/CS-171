@@ -18,20 +18,11 @@ Definition andb (b1: bool) (b2: bool) : bool :=
     |true => b2
     end.
 
-Definition nandb (b1: bool) (b2: bool) : bool :=
-    notb(andb b1 b2).
-
-Example test_nandb: (nandb true true) = false.
-Proof. simpl. reflexivity. Qed.
-
 Definition andb3 (b1: bool) (b2: bool) (b3: bool) : bool :=
     if notb(b1) then false
     else if notb(b2) then false
     else if notb(b3) then false
     else true.
-
-Example test_andb3: (andb3 true true false) = false.
-Proof. simpl. reflexivity. Qed.
 
 Fixpoint minus (n m : nat) : nat := 
     match n, m with 
@@ -45,6 +36,14 @@ Fixpoint mult (n : nat) (m : nat) : nat :=
     |O => O
     |S n' => plus m (mult n' m)
     end. 
+
+(* Answers *)
+
+Definition nandb (b1: bool) (b2: bool) : bool :=
+    notb(andb b1 b2).
+
+(* Example test_nandb: (nandb true true) = false.
+Proof. simpl. reflexivity. Qed. *)
 
 Fixpoint factorial (n : nat) : nat
     
