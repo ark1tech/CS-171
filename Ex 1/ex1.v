@@ -18,12 +18,6 @@ Definition andb (b1: bool) (b2: bool) : bool :=
     |true => b2
     end.
 
-Definition andb3 (b1: bool) (b2: bool) (b3: bool) : bool :=
-    if notb(b1) then false
-    else if notb(b2) then false
-    else if notb(b3) then false
-    else true.
-
 Fixpoint minus (n m : nat) : nat := 
     match n, m with 
     | O , _ => O (*the _ character is a catch-all regex*)
@@ -41,9 +35,41 @@ Fixpoint mult (n : nat) (m : nat) : nat :=
 
 Definition nandb (b1: bool) (b2: bool) : bool :=
     notb(andb b1 b2).
+Example test_nandb: (nandb true true) = false.
+Proof. 
+    reflexivity. 
+Qed.
+    
 
-(* Example test_nandb: (nandb true true) = false.
-Proof. simpl. reflexivity. Qed. *)
+Definition andb3 (b1: bool) (b2: bool) (b3: bool) : bool :=
+    if notb(b1) then false
+    else if notb(b2) then false
+    else if notb(b3) then false
+    else true.
+Example test_andb3: (andb3 true true false) = false.
+Proof. reflexivity. Qed.
 
-Fixpoint factorial (n : nat) : nat
+Fixpoint factorial (n : nat) : nat :=
+    match n with
+    |O => 1
+    |S n' => S n' * factorial n'
+    end.
+Example test_factorial: (factorial 5) = 120.
+Proof. reflexivity. Qed.
+
+
+
+Definition ltb (n m : nat) : bool :=
+    match n, m with 
+    | O , _ => true
+    | S _ , O => false
+    | n' , m' =>  S n' S m'
+    end.
+
+Example test_ltb: (ltb 2 5) = false.
+Proof. simpl. reflexivity. Qed.
+
+
+
+    
     
