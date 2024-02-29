@@ -57,8 +57,6 @@ Fixpoint factorial (n : nat) : nat :=
 Example test_factorial: (factorial 5) = 120.
 Proof. reflexivity. Qed.
 
-
-
 Definition ltb (n m : nat) : bool :=
     match n, m with 
     | O , _ => true
