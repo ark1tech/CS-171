@@ -57,14 +57,16 @@ Fixpoint factorial (n : nat) : nat :=
 Example test_factorial: (factorial 5) = 120.
 Proof. reflexivity. Qed.
 
-Definition ltb (n m : nat) : bool :=
-    match n, m with 
+Fixpoint lt_recursive (n m : nat) : bool := 
+    match n, m with
+    | _ , O => false
     | O , _ => true
-    | S _ , O => false
-    | n' , m' =>  S n' S m'
+    | S n', S m' => lt_recursive n' m'
     end.
 
-Example test_ltb: (ltb 2 5) = false.
+Definition ltb (n m : nat) : bool := lt_recursive n m. 
+
+Example test_ltb: (ltb 2 5) = true.
 Proof. simpl. reflexivity. Qed.
 
 
