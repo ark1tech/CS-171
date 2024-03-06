@@ -31,32 +31,6 @@ Fixpoint mult (n : nat) (m : nat) : nat :=
     |S n' => plus m (mult n' m)
     end. 
 
-(* Answers *)
-
-Definition nandb (b1: bool) (b2: bool) : bool :=
-    notb(andb b1 b2).
-Example test_nandb: (nandb true true) = false.
-Proof. 
-    reflexivity. 
-Qed.
-    
-
-Definition andb3 (b1: bool) (b2: bool) (b3: bool) : bool :=
-    if notb(b1) then false
-    else if notb(b2) then false
-    else if notb(b3) then false
-    else true.
-Example test_andb3: (andb3 true true false) = false.
-Proof. reflexivity. Qed.
-
-Fixpoint factorial (n : nat) : nat :=
-    match n with
-    |O => 1
-    |S n' => S n' * factorial n'
-    end.
-Example test_factorial: (factorial 5) = 120.
-Proof. reflexivity. Qed.
-
 Fixpoint lt_recursive (n m : nat) : bool := 
     match n, m with
     | _ , O => false
@@ -64,10 +38,32 @@ Fixpoint lt_recursive (n m : nat) : bool :=
     | S n', S m' => lt_recursive n' m'
     end.
 
-Definition ltb (n m : nat) : bool := lt_recursive n m. 
+(* -------------- Answers -------------- *)
 
-Example test_ltb: (ltb 2 5) = true.
-Proof. simpl. reflexivity. Qed.
+Definition nandb (b1: bool) (b2: bool) : bool :=
+    notb(andb b1 b2).
+Example test_nandb: (nandb true true) = false.
+Proof. reflexivity. Qed.
+    
+Definition andb3 (b1: bool) (b2: bool) (b3: bool) : bool :=
+    if notb(b1) then false
+    else if notb(b2) then false
+    else if notb(b3) then false
+    else true.
+Example test_andb3: (andb3 true false true) = false.
+Proof. reflexivity. Qed.
+
+Fixpoint factorial (n : nat) : nat :=
+    match n with
+    |O => 1
+    |S n' => S n' * factorial n'
+    end.
+Example test_factorial: (factorial 6) = 720.
+Proof. reflexivity. Qed.
+
+Definition ltb (n m : nat) : bool := lt_recursive n m. 
+Example test_ltb: (ltb 5 5) = false.
+Proof. reflexivity. Qed.
 
 
 
