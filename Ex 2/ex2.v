@@ -10,6 +10,21 @@ Definition andb (b1: bool) (b2: bool) : bool :=
     |true => b2
     end. 
 
+Fixpoint eqb (n m : nat) : bool :=
+    match n, m with
+    |O , O => true
+    |O , S _ => false
+    |S _ , O => false
+    |S n', S m' => eqb n' m'
+    end.
+
+Fixpoint even (n : nat) : bool :=
+    match n with
+    | O => true
+    | S O => false
+    | S (S n') => even n'
+    end.
+
 Fixpoint minus (n m : nat) : nat := 
     match n, m with 
     | O , _ => O
@@ -72,6 +87,29 @@ Proof.
     - simpl. rewrite IHn'. reflexivity.
 Qed.
 
-Theorem add_assoc : ∀ n m p : nat, n + (m + p) = (n + m) + p.
-Theorem eqb_refl : ∀ n : nat, (n =? n) = true.
-Theorem even_S : ∀ n : nat, even (S n) = negb (even n).
+Theorem add_assoc : forall n m p : nat, n + (m + p) = (n + m) + p.
+Proof.
+    intros.
+    induction n as [| n'].
+    - simpl. reflexivity.
+    - simpl. rewrite IHn'. reflexivity.
+Qed.
+
+Theorem eqb_refl : forall n : nat, (eqb n n) = true.
+Proof.
+    intros.
+    induction n as [| n'].
+    - simpl. reflexivity.
+    - simpl. rewrite IHn'. reflexivity.
+Qed.
+    
+Search (even).
+
+Theorem even_S : forall n : nat, even (S n) = negb (even n).
+Proof.
+    intros.
+    induction n as [| n'].
+    - intuition.
+    - 
+Qed.
+    
