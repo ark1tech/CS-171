@@ -43,13 +43,12 @@ Theorem andb_eq_orb : forall (b c : bool), (andb b c = orb b c) -> b = c.
 Proof.
     intros.
     destruct b.
-
-    (* destruct b.
-    intros.
-    destruct c.
-    reflexivity.
-    inversion H. *)
-
+    - destruct c.
+        + reflexivity.
+        + inversion H.
+    - destruct c.
+        + inversion H.
+        + reflexivity.
 Qed.
 
 Theorem mul_0_r : ∀ n:nat, n × 0 = 0.
