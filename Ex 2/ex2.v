@@ -10,6 +10,19 @@ Definition andb (b1: bool) (b2: bool) : bool :=
     |true => b2
     end. 
 
+Fixpoint minus (n m : nat) : nat := 
+    match n, m with 
+    | O , _ => O
+    | S _ , O => n
+    | S n' , S m' => minus n' m'
+    end.
+
+Fixpoint mult (n : nat) (m : nat) : nat :=
+    match n with
+    |O => O
+    |S n' => plus m (mult n' m)
+    end. 
+
 (* Answers *)
 
 Theorem plus_id_exercise : forall n m o : nat, n = m -> m = o -> n + m = m + o.
@@ -51,7 +64,14 @@ Proof.
         + reflexivity.
 Qed.
 
-Theorem mul_0_r : ∀ n:nat, n × 0 = 0.
+Theorem mul_0_r : forall (n : nat), mult n 0 = 0.
+Proof.
+    intros.
+    induction n as [| n' IHn'].
+    - simpl. reflexivity.
+    - simpl. rewrite IHn'. reflexivity.
+Qed.
+
 Theorem add_assoc : ∀ n m p : nat, n + (m + p) = (n + m) + p.
 Theorem eqb_refl : ∀ n : nat, (n =? n) = true.
 Theorem even_S : ∀ n : nat, even (S n) = negb (even n).
