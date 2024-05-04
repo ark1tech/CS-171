@@ -109,7 +109,9 @@ Theorem even_S : forall n : nat, even (S n) = negb (even n).
 Proof.
     intros.
     induction n as [| n'].
-    - intuition.
-    - 
+    - simpl. reflexivity.
+    - rewrite IHn'. simpl. destruct (even n').
+        + reflexivity.
+        + reflexivity.
 Qed.
     
