@@ -1,3 +1,5 @@
+(* --------------- PREFACE --------------- *)
+
 Definition orb (b1: bool) (b2: bool) : bool :=
     match b1 with 
     |true => true
@@ -38,7 +40,7 @@ Fixpoint mult (n : nat) (m : nat) : nat :=
     |S n' => plus m (mult n' m)
     end. 
 
-(* ---------- Answers ---------- *)
+(* --------------- ANSWERS --------------- *)
 
 Theorem plus_id_exercise : forall n m o : nat, n = m -> m = o -> n + m = m + o.
 Proof.
