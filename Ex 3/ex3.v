@@ -1,3 +1,10 @@
+Fixpoint even (n : nat) : bool :=
+    match n with
+    | O => true
+    | S O => false
+    | S (S n') => even n'
+    end.
+
 Inductive natprod : Type :=
     | pair (n1 n2 : nat).
 
@@ -20,7 +27,39 @@ Definition swap_pair (p : natprod) : natprod :=
 
 Inductive natlist : Type :=
     | nil
-    | cons (n : nat) (l : natlist). (*here, n is the head, while l is the tail*)
+    | cons (n : nat) (l : natlist).
+
+Notation "x :: l" := (cons x l)
+    (at level 60, right associativity).
+Notation "[ ]" := nil.
+Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
+
+Fixpoint app (l1 l2 : natlist) : natlist :=
+    match l1 with
+    | nil => l2
+    | h :: t => h :: (app t l2)
+    end.
+
+Notation "x ++ y" := (app x y)
+    (right associativity, at level 60).
+
+Definition hd (default : nat) (l : natlist) : nat :=
+    match l with
+    | nil => default
+    | h :: t => h
+    end.
+
+Definition tl (l : natlist) : natlist :=
+    match l with
+    | nil => nil
+    | h :: t => t
+    end.
+
+Fixpoint rev (l:natlist) : natlist :=
+    match l with
+    | nil => nil
+    | h :: t => rev t ++ [h]
+    end.
 
 (* ANSWERS *)
 
@@ -42,12 +81,39 @@ Qed.
 
 Fixpoint nonzeros (l : natlist) : natlist :=
     match l with
-    
+    | nil => nil
+    | h :: t =>
+        match h with
+        | O => nonzeros t
+        | S h' => h :: (nonzeros t)
+        end
+    end.
+Example test_nonzeros: nonzeros [0;1;0;2;3;0;0] = [1;2;3].
+Proof. reflexivity. Qed.
 
-(* Example test_nonzeros:
-  nonzeros [0;1;0;2;3;0;0] = [1;2;3].
-  (* FILL IN HERE *) Admitted.
+Fixpoint oddmembers (l : natlist) : natlist :=
+    match l with
+    | nil => nil
+    | h :: t =>
+        match (even h) with
+        | true => oddmembers t
+        | false => h :: (oddmembers t)
+        end
+    end.
+Example test_oddmembers: oddmembers [0;1;0;2;3;0;0] = [1;3].
+Proof. reflexivity. Qed.
 
-Fixpoint oddmembers (l:natlist) : natlist
-Theorem app_nil_r : ∀ l : natlist,  l ++ [ ] = l.
-Theorem rev_app_distr: ∀ l1 l2 : natlist,  rev (l1 ++ l2) = rev l2 ++ rev l1. *)
+Theorem app_nil_r : forall l : natlist,  l ++ [ ] = l.
+Proof.
+    intros.
+    induction l.
+    - simpl. reflexivity.
+    - simpl. rewrite IHl. reflexivity.
+Qed.
+
+Theorem rev_app_distr: forall l1 l2 : natlist, rev (l1 ++ l2) = rev l2 ++ rev l1.
+Proof.
+    intros.
+    induction l1.
+    - simpl. rewrite app_nil_r. reflexivity.
+    - simpl. rewrite IHl1. 
