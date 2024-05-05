@@ -38,7 +38,7 @@ Fixpoint mult (n : nat) (m : nat) : nat :=
     |S n' => plus m (mult n' m)
     end. 
 
-(* Answers *)
+(* ---------- Answers ---------- *)
 
 Theorem plus_id_exercise : forall n m o : nat, n = m -> m = o -> n + m = m + o.
 Proof.

@@ -69,7 +69,7 @@ Fixpoint rev (l:natlist) : natlist :=
     | h :: t => rev t ++ [h]
     end.
 
-(* ANSWERS *)
+(* ---------- ANSWERS ---------- *)
 
 Theorem snd_fst_is_swap : forall (p : natprod), (snd p, fst p) = swap_pair p.
 Proof.
