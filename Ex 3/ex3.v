@@ -43,12 +43,11 @@ Fixpoint app (l1 l2 : natlist) : natlist :=
 Notation "x ++ y" := (app x y)
     (right associativity, at level 60).
 
-Theorem app_associative: forall l1 l2 l3 : natlist, (l1 ++ l2) ++ l3 = l1 ++ (l2 ++ l3).
+Theorem app_assoc : forall l1 l2 l3 : natlist, (l1 ++ l2) ++ l3 = l1 ++ (l2 ++ l3).
 Proof.
-    intros.
-    induction l1.
-    - simpl. reflexivity.
-    - simpl. rewrite -> IHl1. reflexivity.
+    intros l1 l2 l3. induction l1 as [| n l1' IHl1'].
+    - reflexivity.
+    - simpl. rewrite -> IHl1'. reflexivity.
 Qed.
 
 Definition hd (default : nat) (l : natlist) : nat :=
@@ -124,5 +123,5 @@ Proof.
     intros.
     induction l1.
     - simpl. rewrite app_nil_r. reflexivity.
-    - simpl. rewrite IHl1. apply app_associative.
+    - simpl. rewrite IHl1. apply app_assoc.
 Qed.
