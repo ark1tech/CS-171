@@ -116,8 +116,19 @@ Definition filter_even_gt7 (l : list nat) : list nat :=
 Example test_filter_even_gt7_1 : filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8].
     Proof. reflexivity. Qed.
 
+Lemma map_app : forall (X Y : Type) (f : X -> Y) (l : list X) (n : X),
+    map f (l ++ [n]) = map f (l) ++ [f n].
+Proof.
+    intros x y f l n. induction l as [ | n' l' IHl'].
+    - simpl. reflexivity.
+    - simpl. rewrite IHl'. reflexivity.
+Qed.
+
 Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
     map f (rev l) = rev (map f l).
 Proof.
     intros.
+    induction l.
+    - simpl. reflexivity.
+    - simpl. rewrite <- IHl. rewrite map_app.
     
