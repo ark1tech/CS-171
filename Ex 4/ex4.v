@@ -85,7 +85,7 @@ Proof.
 Qed.
 
 (* Bonus, necessary for rev_involutive *)
-Theorem rev_app_distr: forall (X : Type), forall (l1 l2 : list X),
+Lemma rev_app_distr: forall (X : Type), forall (l1 l2 : list X),
     rev (l1 ++ l2) = rev l2 ++ rev l1.
 Proof.
     intros.
@@ -130,5 +130,6 @@ Proof.
     intros.
     induction l.
     - simpl. reflexivity.
-    - simpl. rewrite <- IHl. rewrite map_app.
+    - simpl. rewrite <- IHl. rewrite map_app. reflexivity.
+Qed.
     
