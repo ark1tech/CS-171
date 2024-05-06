@@ -11,8 +11,8 @@ Fixpoint repeat (X : Type) (x : X) (count : nat) : list X :=
     => cons X x (repeat X x count')
     end.
 
-(* Notation "x :: l" := (cons x l)
-    (at level 60, right associativity). *)
+Notation "x :: l" := (cons x l)
+    (at level 60, right associativity).
 Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
@@ -78,13 +78,24 @@ Proof.
     - simpl. rewrite IHl. reflexivity.
 Qed.
 
+(* Bonus, necessary for rev_involutive *)
+Theorem rev_app_distr: forall (X : Type), forall (l1 l2 : list X),
+    rev (l1 ++ l2) = rev l2 ++ rev l1.
+Proof.
+    intros.
+    induction l1.
+    - simpl. rewrite app_nil_r. reflexivity.
+    - simpl. rewrite IHl1. rewrite app_assoc. reflexivity.
+Qed.
+(* ^^ there's a way to integrate this sa rev_involutive proof mismo, haven't figured that out. Will give it a try after I gym *)
+
 Theorem rev_involutive : forall (X : Type), forall (l : list X),
     rev (rev l) = l.
 Proof.
     intros.
     induction l.
     - simpl. reflexivity.
-    - simpl. 
+    - simpl. rewrite rev_app_distr. simpl. rewrite IHl. reflexivity.
 Qed.
 
 (* Example test_filter_even_gt7_1 : filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8]. *)
