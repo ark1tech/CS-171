@@ -1,5 +1,12 @@
 (* --------------- PREFACE --------------- *)
 
+Fixpoint even (n : nat) : bool :=
+    match n with
+    | O => true
+    | S O => false
+    | S (S n') => even n'
+    end.
+
 Inductive list (X:Type) : Type :=
     | nil
     | cons (x : X) (l : list X).
@@ -7,18 +14,17 @@ Inductive list (X:Type) : Type :=
 Fixpoint repeat (X : Type) (x : X) (count : nat) : list X :=
     match count with
     | 0 => nil X
-    | S count'
-    => cons X x (repeat X x count')
+    | S count' => cons X x (repeat X x count')
     end.
+
+Arguments nil {X}.
+Arguments cons {X}.
+Arguments repeat {X}.
 
 Notation "x :: l" := (cons x l)
     (at level 60, right associativity).
 Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
-
-Arguments nil {X}.
-Arguments cons {X}.
-Arguments repeat {X}.
 
 Fixpoint app {X : Type} (l1 l2 : list X) : list X :=
     match l1 with
@@ -49,23 +55,23 @@ Proof.
     - simpl. rewrite IHl'. reflexivity.
 Qed.
 
-(* Fixpoint filter {X:Type} (test: X -> bool) (l:list X) : list X :=
+Fixpoint filter {X:Type} (test : X -> bool) (l:list X) : list X :=
     match l with
     | [] => []
     | h :: t =>
         if test h then h :: (filter test t)
         else filter test t
-    end. *)
+    end.
 
 (* Definition partition {X : Type} (test : X -> bool)
     (l : list X) : list X * list X :=
     ((filter test l),(filter (fun n => negb (test n)) l)). *)
 
-(* Fixpoint map {X Y : Type} (f : X->Y) (l : list X) : list Y :=
+Fixpoint map {X Y : Type} (f : X->Y) (l : list X) : list Y :=
     match l with
     | [] => []
     | h :: t => (f h) :: (map f t)
-    end. *)
+    end.
 
 (* --------------- ANSWERS --------------- *)
 
@@ -87,7 +93,6 @@ Proof.
     - simpl. rewrite app_nil_r. reflexivity.
     - simpl. rewrite IHl1. rewrite app_assoc. reflexivity.
 Qed.
-(* ^^ there's a way to integrate this sa rev_involutive proof mismo, haven't figured that out. Will give it a try after I gym *)
 
 Theorem rev_involutive : forall (X : Type), forall (l : list X),
     rev (rev l) = l.
@@ -98,7 +103,26 @@ Proof.
     - simpl. rewrite rev_app_distr. simpl. rewrite IHl. reflexivity.
 Qed.
 
-(* Example test_filter_even_gt7_1 : filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8]. *)
+Definition even_gt7 (n : nat) : bool :=
+    match even n with
+    | false => false
+    | true =>
+        match n with
+        | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 => false
+        | _ => true
+        end
+    end.
 
-(* Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
-    map f (rev l) = rev (map f l). *)
+Definition filter_even_gt7 (l : list nat) : list nat :=
+    match l with
+    | nil => nil
+    | l => filter even_gt7 l
+    end.
+Example test_filter_even_gt7_1 : filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8].
+    Proof. reflexivity. Qed.
+
+Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
+    map f (rev l) = rev (map f l).
+Proof.
+    intros.
+    
