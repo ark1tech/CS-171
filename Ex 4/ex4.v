@@ -103,20 +103,15 @@ Proof.
     - simpl. rewrite rev_app_distr. simpl. rewrite IHl. reflexivity.
 Qed.
 
-Definition even_gt7 (n : nat) : bool :=
-    match even n with
-    | false => false
-    | true =>
-        match n with
-        | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 => false
-        | _ => true
-        end
+Definition gt7 (n : nat) : bool :=
+    match n with
+    | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 => false
+    | _ => true
     end.
-
 Definition filter_even_gt7 (l : list nat) : list nat :=
     match l with
     | nil => nil
-    | l => filter even_gt7 l
+    | l => filter gt7 (filter even l)
     end.
 Example test_filter_even_gt7_1 : filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8].
     Proof. reflexivity. Qed.
