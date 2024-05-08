@@ -1,3 +1,5 @@
+(* --------------- PREFACE --------------- *)
+
 Inductive bool : Type := 
     |true
     |false.
@@ -38,7 +40,7 @@ Fixpoint lt_recursive (n m : nat) : bool :=
     | S n', S m' => lt_recursive n' m'
     end.
 
-(* -------------- Answers -------------- *)
+(* --------------- ANSWERS --------------- *)
 
 Definition nandb (b1: bool) (b2: bool) : bool :=
     notb(andb b1 b2).
