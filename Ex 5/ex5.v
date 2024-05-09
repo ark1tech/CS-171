@@ -16,6 +16,8 @@ Arguments cons {X}.
 
 Notation "x :: l" := (cons x l)
     (at level 60, right associativity).
+Notation "[ ]" := nil.
+Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
 (* --------------- ANSWERS --------------- *)
 
@@ -37,9 +39,9 @@ Proof.
     intros X x y z l j eq1 eq2.
     injection eq1 as eq3 eq4.
     subst.
-    symmetry.
-    
-    
+    injection eq2.
+    intuition. (* <-- I don't think this is valid HAHA*)
+Qed.
 
 (* Example discriminate_ex3 : ∀ (X : Type) (x y z : X) (l j : list X), x :: y :: l = [ ] → x = z. *)
 
