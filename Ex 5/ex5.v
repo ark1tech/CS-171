@@ -43,7 +43,12 @@ Proof.
     intuition. (* <-- I don't think this is valid HAHA*)
 Qed.
 
-(* Example discriminate_ex3 : ∀ (X : Type) (x y z : X) (l j : list X), x :: y :: l = [ ] → x = z. *)
+Example discriminate_ex3 : forall (X : Type) (x y z : X) (l j : list X),
+    x :: y :: l = [ ] -> x = z.
+Proof.
+    intros.
+    discriminate H.
+Qed.
 
 (* Theorem plus_n_n_injective : ∀ n m, n + n = m + m →  n = m. *)
 
