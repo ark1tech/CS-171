@@ -53,7 +53,27 @@ Proof.
     discriminate H.
 Qed.
 
-(* Theorem plus_n_n_injective : ∀ n m, n + n = m + m →  n = m. *)
+(* BONUS : needed for plus_n_n_injective *)
+Lemma plus_n_Sm : forall n m : nat,
+  S (n + m) = n + (S m).
+Proof.
+    intros.
+    induction n.
+    - reflexivity.
+    - simpl. rewrite IHn. reflexivity.
+Qed.
+
+Theorem plus_n_n_injective : forall n m,
+    n + n = m + m -> n = m.
+Proof.
+    intros n. 
+    induction n.
+    - intros. destruct m.
+        + reflexivity.
+        + discriminate.
+    - intros. simpl in H. destruct m.
+        + symmetry. discriminate.
+        + f_equal. apply IHn.
 
 (* Theorem nth_error_after_last: ∀ (n : nat) (X : Type) (l : list X), length l = n → nth_error l n = None. *)
 
