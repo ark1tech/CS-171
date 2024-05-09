@@ -38,9 +38,12 @@ Example injection_ex3 : forall (X : Type) (x y z : X) (l j : list X),
 Proof.
     intros X x y z l j eq1 eq2.
     injection eq1 as eq3 eq4.
-    subst.
+    rewrite eq3.
+    rewrite <- eq4 in eq2.
+    symmetry.
     injection eq2.
-    intuition. (* <-- I don't think this is valid HAHA*)
+    intros.
+    apply H.
 Qed.
 
 Example discriminate_ex3 : forall (X : Type) (x y z : X) (l j : list X),
