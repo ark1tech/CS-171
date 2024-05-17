@@ -29,6 +29,12 @@ Fixpoint nth_error {X : Type} (l : list X) (n : nat): option X :=
         end
     end.
 
+Fixpoint length {X : Type} (l : list X) : nat :=
+    match l with
+    | nil => 0
+    | cons _ l' => S (length l')
+    end.
+
 (* --------------- ANSWERS --------------- *)
 
 Example trans_eq_exercise : forall (n m o p : nat),
@@ -89,5 +95,13 @@ Qed.
 Theorem nth_error_after_last: forall (n : nat) (X : Type) (l : list X), length l = n -> nth_error l n = None.
 Proof.
     intros.
+    generalize dependent n.
+    induction l.
+    - reflexivity.
+    - destruct n. 
+        + discriminate.
+        + symmetry. injection H as eq1. simpl. apply IHl in eq1. symmetry. apply eq1.
+Qed.  
 
-(* Theorem eqb_true : forall n m, n =? m = true -> n = m. *)
+Theorem eqb_true : forall n m, n =? m = true -> n = m.
+Proof.
