@@ -42,3 +42,4 @@ Fixpoint reverse {X : Type} (l1 l2 : list X) : list X :=
     (* kapag axiom no need to prove ! *)
 
 (* assert hypothesis => di na need mag for all => what ever data may be, pwede na sya gamitin..? => additional goal and prove the assert (proving theorem inside a theorem )*) 
+

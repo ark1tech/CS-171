@@ -7,4 +7,3 @@
 - `Theorem plus_n_n_injective : ∀ n m, n + n = m + m →  n = m.`
 - `Theorem nth_error_after_last: ∀ (n : nat) (X : Type) (l : list X), length l = n → nth_error l n = None.`
 - `Theorem eqb_true : forall n m, n =? m = true -> n = m.`
-

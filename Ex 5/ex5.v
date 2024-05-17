@@ -52,6 +52,7 @@ Proof.
     discriminate H.
 Qed.
 
+
 (* BONUS : needed for plus_n_n_injective *)
 Lemma plus_n_Sm : forall n m : nat,
   S (n + m) = n + (S m).
@@ -67,12 +68,12 @@ Theorem plus_n_n_injective : forall n m,
 Proof.
     intros n. 
     induction n.
-    - intros. destruct m.
+    - destruct m.
         + reflexivity.
         + discriminate.
-    - intros. simpl in H. destruct m.
+    - destruct m.
         + symmetry. discriminate.
-        + f_equal. apply IHn.
+        + simpl. symmetry. rewrite <- plus_n_Sm in H. rewrite <- plus_n_Sm in H. injection H as eq1. apply IHn in eq1. f_equal. symmetry. apply eq1.
 
 (* Theorem nth_error_after_last: ∀ (n : nat) (X : Type) (l : list X), length l = n → nth_error l n = None. *)
 
