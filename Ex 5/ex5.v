@@ -41,9 +41,8 @@ Proof.
     rewrite eq3.
     rewrite <- eq4 in eq2.
     symmetry.
-    injection eq2.
-    intros.
-    apply H.
+    injection eq2 as eq5.
+    apply eq5.
 Qed.
 
 Example discriminate_ex3 : forall (X : Type) (x y z : X) (l j : list X),
