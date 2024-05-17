@@ -19,6 +19,16 @@ Notation "x :: l" := (cons x l)
 Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
+Fixpoint nth_error {X : Type} (l : list X) (n : nat): option X :=
+    match l with
+    | nil => None
+    | a :: l' =>
+        match n with
+            | O => Some a
+            | S n' => nth_error l' n'
+        end
+    end.
+
 (* --------------- ANSWERS --------------- *)
 
 Example trans_eq_exercise : forall (n m o p : nat),
