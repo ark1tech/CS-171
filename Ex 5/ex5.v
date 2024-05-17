@@ -74,7 +74,10 @@ Proof.
     - destruct m.
         + symmetry. discriminate.
         + simpl. symmetry. rewrite <- plus_n_Sm in H. rewrite <- plus_n_Sm in H. injection H as eq1. apply IHn in eq1. f_equal. symmetry. apply eq1.
+Qed.
 
-(* Theorem nth_error_after_last: ∀ (n : nat) (X : Type) (l : list X), length l = n → nth_error l n = None. *)
+Theorem nth_error_after_last: forall (n : nat) (X : Type) (l : list X), length l = n -> nth_error l n = None.
+Proof.
+    intros.
 
 (* Theorem eqb_true : forall n m, n =? m = true -> n = m. *)
