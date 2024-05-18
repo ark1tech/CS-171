@@ -118,5 +118,15 @@ Proof.
         + symmetry. injection H as eq1. simpl. apply IHl in eq1. symmetry. apply eq1.
 Qed.  
 
-Theorem eqb_true : forall n m, n =? m = true -> n = m.
+Theorem eqb_true : forall n m,
+    n =? m = true -> n = m.
 Proof.
+    intros n.
+    induction n.
+    - destruct m.
+        + reflexivity.
+        + discriminate.
+    - destruct m.
+        + symmetry. discriminate.
+        + intros. apply IHn in H. rewrite H. reflexivity.
+Qed.
