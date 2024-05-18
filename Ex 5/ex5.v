@@ -35,6 +35,22 @@ Fixpoint length {X : Type} (l : list X) : nat :=
     | cons _ l' => S (length l')
     end.
 
+Fixpoint eqb (n m : nat) : bool :=
+    match n with
+    | O =>
+        match m with
+        | O => true
+        | S m' => false
+        end
+    | S n' =>
+        match m with
+        | O => false
+        | S m' => eqb n' m'
+        end
+    end.
+
+Notation "x =? y" := (eqb x y) (at level 70) : nat_scope.
+
 (* --------------- ANSWERS --------------- *)
 
 Example trans_eq_exercise : forall (n m o p : nat),
@@ -67,7 +83,6 @@ Proof.
     intros.
     discriminate H.
 Qed.
-
 
 (* BONUS : needed for plus_n_n_injective *)
 Lemma plus_n_Sm : forall n m : nat,
