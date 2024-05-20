@@ -18,17 +18,26 @@ Theorem SSSSev__even : forall n,
     ev (S (S (S (S n)))) -> ev n.
 Proof.
     intros.
-    induction n.
-    - apply ev_0.
-Admitted.
+    inversion H.
+    inversion H1.
+    apply H3.
+Qed.
 
 Theorem ev5_nonsense :
     ev 5 -> 2 + 2 = 9.
-Admitted. 
+Proof.
+    intros.
+    simpl.
+    inversion H.
+    inversion H1.
+    inversion H3.
+Qed.
 
 Theorem ev_sum : forall n m,
     ev n -> ev m -> ev (n + m).
-Admitted.
+Proof.
+    intros n m HA HB.
+    apply ev_SS in HA.
 
 Theorem ev_ev__ev : forall n m,
     ev (n+m) -> ev n -> ev m.
