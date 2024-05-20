@@ -22,13 +22,15 @@ Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
 (* --------------- ANSWERS --------------- *)
 
-Lemma proj2 : forall P Q : Prop, P /\ Q -> Q.
+Lemma proj2 : forall P Q : Prop,
+    P /\ Q -> Q.
 Proof.
     intros.
     apply H.
 Qed.
 
-Theorem and_assoc : forall  P Q R : Prop, P /\ (Q /\ R) -> (P /\ Q) /\ R.
+Theorem and_assoc : forall  P Q R : Prop,
+    P /\ (Q /\ R) -> (P /\ Q) /\ R.
 Proof.
     intros.
     split.
@@ -36,7 +38,8 @@ Proof.
     - apply H.
 Qed. 
 
-Lemma mult_is_O : forall n m, n * m = 0 -> n = 0 \/ m = 0.
+Lemma mult_is_O : forall n m,
+    n * m = 0 -> n = 0 \/ m = 0.
 Proof.
     intros.
     destruct n.
@@ -46,7 +49,8 @@ Proof.
         + left. inversion H.
 Qed. 
 
-Theorem or_commut : forall P Q : Prop,  P \/ Q -> Q \/ P.
+Theorem or_commut : forall P Q : Prop,
+    P \/ Q -> Q \/ P.
 Proof.
     intros.
     inversion H.
@@ -54,7 +58,8 @@ Proof.
     left. apply H0.
 Qed.
     
-Theorem not_both_true_and_false : forall P : Prop,  ~(P /\ ~P).
+Theorem not_both_true_and_false : forall P : Prop,
+    ~(P /\ ~P).
 Proof.
     unfold not.
     intros.
@@ -63,7 +68,8 @@ Proof.
     apply H.
 Qed.
 
-Theorem or_distributes_over_and : forall P Q R : Prop,  P \/  (Q /\ R) <-> (P \/ Q) /\ (P \/ R).
+Theorem or_distributes_over_and : forall P Q R : Prop, 
+    P \/  (Q /\ R) <-> (P \/ Q) /\ (P \/ R).
 Proof.
     intros.
     split.
