@@ -1,4 +1,14 @@
 (* --------------- PREFACE --------------- *)
+Fixpoint double (n:nat) :=
+  match n with
+  | O => O
+  | S n' => S (S (double n'))
+  end.
+
+Lemma double_plus n m : double (n + m) = double n + double m.
+Proof.
+    intros.
+
 Inductive ev : nat -> Prop :=
     | ev_0 : ev 0
     | ev_SS (n : nat) (H : ev n) : ev (S (S n)).
@@ -87,8 +97,9 @@ Theorem ev_plus_plus : forall n m p,
     ev (n+m) -> ev (n+p) -> ev (m+p).
 Proof.
     intros.
-    apply ev_ev__ev with (n := (n+m)).
-    - rewrite <- add_comm. rewrite add_comm with (n:=m). apply ev_sum.
+    apply ev_ev__ev with (n := (n+p)).
+    - rewrite add_assoc. rewrite add_comm. rewrite add_comm with (n:=n). rewrite <- add_assoc. rewrite add_assoc. rewrite add_comm. apply ev_sum. apply H. rewrite <- double_plus.
+Admitted.
 
 Theorem total_relation_is_total : forall n m,
     total_relation n m.
