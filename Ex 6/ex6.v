@@ -21,6 +21,7 @@ Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
 (* --------------- ANSWERS --------------- *)
+
 Lemma proj2 : forall P Q : Prop, P /\ Q -> Q.
 Proof.
     intros.
@@ -41,8 +42,8 @@ Proof.
     destruct n.
     - left. reflexivity.
     - destruct m.
-     + right. reflexivity.
-     + left. inversion H.
+        + right. reflexivity.
+        + left. inversion H.
 Qed. 
 
 Theorem or_commut : forall P Q : Prop,  P \/ Q -> Q \/ P.
