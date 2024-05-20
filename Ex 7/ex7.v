@@ -12,7 +12,7 @@ Proof.
     intros.
     induction n.
     - apply ev_0.
-    - apply ev_SS in H.
+    - 
 
 (* Theorem ev5_nonsense :
     ev 5 -> 2 + 2 = 9.
