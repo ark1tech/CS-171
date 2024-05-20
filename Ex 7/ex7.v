@@ -37,7 +37,10 @@ Theorem ev_sum : forall n m,
     ev n -> ev m -> ev (n + m).
 Proof.
     intros n m HA HB.
-    apply ev_SS in HA.
+    induction HA.
+    - simpl. apply HB.
+    - simpl. apply ev_SS in IHHA. apply IHHA.
+Qed.
 
 Theorem ev_ev__ev : forall n m,
     ev (n+m) -> ev n -> ev m.
