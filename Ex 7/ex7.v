@@ -5,7 +5,7 @@ Inductive ev : nat -> Prop :=
     | ev_SS (n : nat) (H : ev n) : ev (S (S n)).
 
 Inductive total_relation : nat -> nat -> Prop :=
-    | tr : forall n m, total_relation n m.
+    | total_rel (n m : nat) : total_relation n m.
 
 Theorem evSS_ev : forall n, ev (S (S n)) -> ev n.
 Proof.
@@ -57,9 +57,10 @@ Proof.
     intros.
     inversion H 
 Admitted.
-    
-Admitted.
 
 Theorem total_relation_is_total : forall n m,
     total_relation n m.
-Admitted.
+Proof.
+    intros.
+    apply (total_rel n m).
+Qed.
