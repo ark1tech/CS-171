@@ -1,5 +1,4 @@
 (* --------------- PREFACE --------------- *)
-
 Inductive ev : nat -> Prop :=
     | ev_0 : ev 0
     | ev_SS (n : nat) (H : ev n) : ev (S (S n)).
@@ -10,6 +9,39 @@ Inductive total_relation : nat -> nat -> Prop :=
 Theorem evSS_ev : forall n, ev (S (S n)) -> ev n.
 Proof.
     intros n H. inversion H. apply H1.
+Qed.
+
+Theorem add_0_r : forall n:nat, n + 0 = n.
+Proof.
+  intros n. induction n as [| n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity. 
+Qed.
+
+Lemma plus_n_Sm : forall n m : nat,
+    S (n + m) = n + (S m).
+Proof.
+    intros.
+    induction n.
+    - reflexivity.
+    - simpl. rewrite IHn. reflexivity.
+Qed.
+  
+Theorem add_assoc : forall n m p : nat, n + (m + p) = (n + m) + p.
+Proof.
+    intros.
+    induction n as [| n'].
+    - simpl. reflexivity.
+    - simpl. rewrite IHn'. reflexivity.
+Qed.
+
+Theorem add_comm : forall n m : nat,
+    n + m = m + n.
+Proof.
+    intros.
+    induction n.
+    - simpl. rewrite add_0_r. reflexivity.
+    - simpl. rewrite -> IHn. rewrite plus_n_Sm. reflexivity.
 Qed.
 
 (* --------------- ANSWERS --------------- *)
@@ -36,10 +68,10 @@ Qed.
 Theorem ev_sum : forall n m,
     ev n -> ev m -> ev (n + m).
 Proof.
-    intros n m HA HB.
-    induction HA.
-    - simpl. apply HB.
-    - simpl. apply ev_SS in IHHA. apply IHHA.
+    intros.
+    induction H.
+    - simpl. apply H0.
+    - apply ev_SS. apply IHev.
 Qed.
 
 Theorem ev_ev__ev : forall n m,
@@ -55,8 +87,8 @@ Theorem ev_plus_plus : forall n m p,
     ev (n+m) -> ev (n+p) -> ev (m+p).
 Proof.
     intros.
-    inversion H 
-Admitted.
+    apply ev_ev__ev with (n := (n+m)).
+    - rewrite <- add_comm. rewrite add_comm with (n:=m). apply ev_sum.
 
 Theorem total_relation_is_total : forall n m,
     total_relation n m.
