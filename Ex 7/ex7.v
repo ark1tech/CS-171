@@ -1,14 +1,4 @@
 (* --------------- PREFACE --------------- *)
-Fixpoint double (n:nat) :=
-  match n with
-  | O => O
-  | S n' => S (S (double n'))
-  end.
-
-Lemma double_plus n m : double (n + m) = double n + double m.
-Proof.
-    intros.
-
 Inductive ev : nat -> Prop :=
     | ev_0 : ev 0
     | ev_SS (n : nat) (H : ev n) : ev (S (S n)).
@@ -35,6 +25,29 @@ Proof.
     induction n.
     - reflexivity.
     - simpl. rewrite IHn. reflexivity.
+Qed.
+
+Fixpoint double (n:nat) :=
+  match n with
+  | O => O
+  | S n' => S (S (double n'))
+  end.
+
+Lemma double_plus n: double n = n + n.
+Proof.
+    intros.
+    induction n.
+    - simpl. reflexivity.
+    - simpl. rewrite IHn. rewrite plus_n_Sm. reflexivity.
+Qed.    
+
+Theorem ev_double : forall n,
+  ev (double n).
+Proof.
+  intros. 
+  induction n.
+  - apply ev_0.
+  - apply ev_SS. apply IHn. 
 Qed.
   
 Theorem add_assoc : forall n m p : nat, n + (m + p) = (n + m) + p.
@@ -98,8 +111,9 @@ Theorem ev_plus_plus : forall n m p,
 Proof.
     intros.
     apply ev_ev__ev with (n := (n+p)).
-    - rewrite add_assoc. rewrite add_comm. rewrite add_comm with (n:=n). rewrite <- add_assoc. rewrite add_assoc. rewrite add_comm. apply ev_sum. apply H. rewrite <- double_plus.
-Admitted.
+    - rewrite add_assoc. rewrite add_comm. rewrite add_comm with (n:=n). rewrite <- add_assoc. rewrite add_assoc. rewrite add_comm. apply ev_sum. apply H. rewrite <- double_plus. apply ev_double.
+    - apply H0.
+Qed.
 
 Theorem total_relation_is_total : forall n m,
     total_relation n m.
