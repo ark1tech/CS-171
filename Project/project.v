@@ -35,7 +35,9 @@ Notation "x <= y" := (lebnat x y).
 Notation "x > y" := (grbnat x y).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
-    A client...
+
+    A sick client wants you to make an app that maintains his heart
+    rate to a normal BPM (40 to 120 BPM).
 
     App constraints:
 
@@ -60,33 +62,35 @@ Inductive beat_type_bpm : Type :=
 
 (* Definition that calculates actual BPM from natural + artificial *)
 
-(* Definition that states 1 if BPM is normal, 0 if BPM is abnormal *)
-
 (* Definition that differentiates weak from strong electrical signal *)
 
 
-(*------------------PREPARATION FUNCTIONS------------------*)
-
-(* Function that returns TRUE if actual BPM is <40 or >120 *)
-
-(* Function that returns TRUE if natural BPM is 0 *)
-
-(* Function that adds 1 to artificial BPM if weak signal is true *)
+(*------------------HEART FUNCTIONS------------------*)
 
 
-(*------------------PREPARATION AXIOMS------------------*)
+(*------------------HEART AXIOMS------------------*)
 
 (* If beat type is not natural, it is artificial *)
 
 (* Vice versa*)
 
-(* If *)
+(* If BPM is not normal, it is abnormal *)
+
+(* Vice versa *)
 
 
-(*------------------PREPARATION PROPERTIES------------------*)
+(*------------------HEART PROPERTIES------------------*)
 
 
 (*------------------PACEMAKER FUNCTIONS------------------*)
+
+(* Function that returns TRUE if actual BPM is <40 or >120 -- meaning abnormal *)
+
+(* Function that adds 1 to artificial BPM if abnormal BPM *)
+
+(* Function that returns TRUE if natural BPM is 0 -- meaning needs restarting *)
+
+
 
 
 (*------------------PACEMAKER AXIOMS------------------*)
