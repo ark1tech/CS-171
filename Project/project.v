@@ -56,11 +56,22 @@ Inductive beat_type : Type :=
     | artificial
     | natural.
 
+Inductive strength_type : Type :=
+    | weak
+    | strong
+    | normal.
+
 Inductive beat_type_bpm : Type :=
     | I (b : beat_type) (n : nat).
 
 (* Definition that differentiates weak from strong electrical signal *)
-
+Definition strength_level (n : nat) : strength_type :=
+    if n <=? 40 then
+    strong
+  else if 120 <=? n then
+    weak
+  else
+    normal.
 
 (*------------------HEART FUNCTIONS------------------*)
 

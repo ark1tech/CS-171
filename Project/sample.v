@@ -43,8 +43,6 @@ Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y []) ..).
 Notation "x ++ y" := (app x y) (at level 60, right associativity).
 
-
-
 (*------------------USE CASE FOR ICE CREAM MAKER------------------*)
 
 (*
@@ -67,10 +65,6 @@ Notation "x ++ y" := (app x y) (at level 60, right associativity).
     3) However, the input list to the maker should be uniform (i.e. all of the same flavor).
     4) Given a uniform list of length n, the taste rating is 2^n.
 *)
-
-
-
-
 
 (*------------------DEFINITIONS------------------*)
 
