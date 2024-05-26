@@ -47,7 +47,6 @@ Notation "x > y" := (grbnat x y).
 
 *)
 
-
 (*------------------DEFINITIONS------------------*)
 
 Definition bpm_lower_limit : nat := 40.
