@@ -1,5 +1,3 @@
-
-
 From Coq Require Import Permutation.
 From Coq Require Import Bool.Bool.
 From Coq Require Import Init.Nat.
@@ -25,12 +23,13 @@ Notation "x ++ y" := (app x y) (at level 60, right associativity).
     2) Any time the heart rate goes above or below this limit, a weak electrical signal is produced to create an artificial heart beat.
     3) If there is no natural heartbeat detected within the last 60 seconds, a strong electrical signal is produced to restart the heart.
 
-
-
 *)
 
 
 (*------------------DEFINITIONS------------------*)
+
+Definition bpm_lower_limit : nat := 40.
+Definition bpm_upper_limit : nat := 120.
 
 Inductive beat_type : Type :=
     | artificial
