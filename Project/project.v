@@ -60,12 +60,12 @@ Inductive beat_type : Type :=
 Inductive beat_type_bpm : Type :=
     | I (b : beat_type) (n : nat).
 
-(* Definition that calculates actual BPM from natural + artificial *)
-
 (* Definition that differentiates weak from strong electrical signal *)
 
 
 (*------------------HEART FUNCTIONS------------------*)
+
+(* Definition that returns actual BPM from natural + artificial *)
 
 
 (*------------------HEART AXIOMS------------------*)
