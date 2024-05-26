@@ -7,12 +7,32 @@ From Coq Require Import Lia.
 From Coq Require Import Lists.List. Import ListNotations.
 
 (*------------------HELPERS------------------*)
+Fixpoint lebnat (n m : nat) : bool :=
+    match n with
+    | O => true
+    | S n' =>
+        match m with
+        | O => false
+        | S m' => lebnat n' m'
+        end
+    end.
 
+Fixpoint grbnat (n m : nat) : bool :=
+    match n with
+    | O => false
+    | S n' =>
+        match m with
+        | O => true
+        | S m' => grbnat n' m'
+        end
+    end.
 
 Notation "x :: y" := (cons x y) (at level 60, right associativity).
 Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y []) ..).
 Notation "x ++ y" := (app x y) (at level 60, right associativity).
+Notation "x <= y" := (lebnat x y).
+Notation "x > y" := (grbnat x y).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
     A client...
