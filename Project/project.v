@@ -86,8 +86,6 @@ Inductive beat_type_bpm : Type :=
 
 (* Function that returns TRUE if actual BPM is <40 or >120 -- meaning abnormal *)
 
-(* Function that adds 1 to artificial BPM if abnormal BPM *)
-
 (* Function that returns TRUE if natural BPM is 0 -- meaning needs restarting *)
 
 
@@ -95,3 +93,4 @@ Inductive beat_type_bpm : Type :=
 
 (*------------------PACEMAKER AXIOMS------------------*)
 
+(* Function that adds 1 to artificial BPM if abnormal BPM *)
