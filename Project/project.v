@@ -94,12 +94,20 @@ Definition need_restart (b1 b2 : beat_type_bpm) : bool :=
 (*------------------HEART AXIOMS------------------*)
 
 (* If beat type is not natural, it is artificial *)
+Axiom ax_natural_artificial : forall b1 b2,
+    .
 
 (* Vice versa*)
+Axiom ax_artificial_natural : forall b1 b2,
+    .
 
-(* If BPM is not normal, it is abnormal *)
+(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
+Axiom ax_abnormal_bpm : forall b1 b2,
+    .
 
-(* Vice versa *)
+(* If BPM is normal, then need_pace and need_restart is FALSE *)
+Axiom ax_normal_bpm : forall b1 b2,
+    .
 
 
 (*------------------HEART PROPERTIES------------------*)
