@@ -101,14 +101,6 @@ Axiom ax_natural_artificial : forall b1 b2,
 Axiom ax_artificial_natural : forall b1 b2,
     .
 
-(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
-Axiom ax_abnormal_bpm : forall b1 b2,
-    .
-
-(* If BPM is normal, then need_pace and need_restart is FALSE *)
-Axiom ax_normal_bpm : forall b1 b2,
-    .
-
 
 (*------------------HEART PROPERTIES------------------*)
 
@@ -116,7 +108,13 @@ Axiom ax_normal_bpm : forall b1 b2,
 
 (* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
 
+(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
+Theorem abnormal_bpm : forall b1 b2,
+    .
 
+(* If BPM is normal, then need_pace and need_restart is FALSE *)
+Theorem normal_bpm : forall b1 b2,
+    .
 
 
 (*------------------PACEMAKER FUNCTIONS------------------*)
