@@ -65,18 +65,30 @@ Inductive beat_type_bpm : Type :=
     | I (b : beat_type) (n : nat).
 
 (* Definition that returns actual BPM from natural + artificial *)
-Definition actual_bpm (n a : beat_type_bpm) : beat_type_bpm :
-    match n with
-    | O => a
-    | S n' => n + a
+Definition actual_bpm (b1 b2 : beat_type_bpm) : nat :=
+    match b1, b2 with
+    | I _ n1, I _ n2 => n1 + n2
     end.
 
 (*------------------HEART FUNCTIONS------------------*)
 
-(* need_pace : Function that returns TRUE if actual BPM is <40 -- meaning abnormal *)
+(* need_pace : Function that returns TRUE if actual BPM is <60 -- meaning abnormal *)
+Definition need_pace (b1 b2 : beat_type_bpm) : bool :=
+    (actual_bpm b1 b2) <= bpm_lower_limit.
 
-(* need_restart : Function that returns TRUE if actual BPM is >120 or natural BPM is 0 -- meaning needs restarting *)
-
+(* need_restart : Function that returns TRUE if actual BPM is >100 or natural BPM is 0 -- meaning needs restarting *)
+Definition need_restart (b1 b2 : beat_type_bpm) : bool :=
+    let bpm1 :=
+        match b1 with
+        | I natural n1 => n1
+        | I artificial _ => 1
+        end in
+    let bpm2 :=
+        match b2 with
+        | I natural n2 => n2
+        | I artificial _ => 1
+        end in
+    (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
 
 (*------------------HEART AXIOMS------------------*)
 
@@ -100,9 +112,9 @@ Definition actual_bpm (n a : beat_type_bpm) : beat_type_bpm :
 
 (*------------------PACEMAKER FUNCTIONS------------------*)
 
-(* weak_signal : Function that adds 1 to artificial BPM if abnormal BPM *)
+(* signal_weak : Function that adds 1 to artificial BPM if abnormal BPM *)
 
-(* strong_signal : Function that restarts the heart, i.e. reset to default 60 BPM *)
+(* signal_strong : Function that restarts the heart, i.e. reset to default 60 BPM *)
 
 
 
