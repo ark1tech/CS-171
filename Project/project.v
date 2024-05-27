@@ -36,21 +36,22 @@ Notation "x > y" := (grbnat x y).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
 
-    A sick client wants you to make an app that maintains his heart
-    rate to a normal BPM (40 to 120 BPM).
+    A sick client wants you to make an app that maintains a normal heart rate.
+    The normal heart rate is 60 to 100 BPM.
 
     App constraints:
 
-    1) The heart's BPM should stay in between 40 and 120 (normal heart rate).
-    2) Any time the heart rate goes above or below this limit, a weak electrical signal is produced to create an artificial heart beat.
-    3) If there is no natural heartbeat detected within the last 60 seconds, a strong electrical signal is produced to restart the heart.
+    1) The heart's BPM should stay in between 60 and 100 (normal heart rate).
+    2) Any time the heart rate goes below this limit, a weak electrical signal is produced to create an artificial heart beat to compensate.
+    3) If the heart rate goes above this limit, a strong electrical signal is produced to restart the heart's rhythm.
+    4) If there is no natural heartbeat detected within the last 60 seconds, a strong electrical signal is produced to restart the heart's rhythm.
 
 *)
 
 (*------------------DEFINITIONS------------------*)
 
-Definition bpm_lower_limit : nat := 40.
-Definition bpm_upper_limit : nat := 120.
+Definition bpm_lower_limit : nat := 60.
+Definition bpm_upper_limit : nat := 100.
 
 Inductive beat_type : Type :=
     | artificial
@@ -58,24 +59,23 @@ Inductive beat_type : Type :=
 
 Inductive strength_type : Type :=
     | weak
-    | strong
-    | normal.
+    | strong.
 
 Inductive beat_type_bpm : Type :=
     | I (b : beat_type) (n : nat).
 
-(* Definition that differentiates weak from strong electrical signal *)
-Definition strength_level (n : nat) : strength_type :=
-    if n <=? 40 then
-    strong
-  else if 120 <=? n then
-    weak
-  else
-    normal.
+(* Definition that returns actual BPM from natural + artificial *)
+Definition actual_bpm (n a : beat_type_bpm) : beat_type_bpm :
+    match n with
+    | O => a
+    | S n' => n + a
+    end.
 
 (*------------------HEART FUNCTIONS------------------*)
 
-(* Definition that returns actual BPM from natural + artificial *)
+(* need_pace : Function that returns TRUE if actual BPM is <40 -- meaning abnormal *)
+
+(* need_restart : Function that returns TRUE if actual BPM is >120 or natural BPM is 0 -- meaning needs restarting *)
 
 
 (*------------------HEART AXIOMS------------------*)
@@ -91,16 +91,21 @@ Definition strength_level (n : nat) : strength_type :=
 
 (*------------------HEART PROPERTIES------------------*)
 
+(* If artificial BPM is 40, then need_restart is TRUE *)
+
+(* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
+
+
+
 
 (*------------------PACEMAKER FUNCTIONS------------------*)
 
-(* Function that returns TRUE if actual BPM is <40 or >120 -- meaning abnormal *)
+(* weak_signal : Function that adds 1 to artificial BPM if abnormal BPM *)
 
-(* Function that returns TRUE if natural BPM is 0 -- meaning needs restarting *)
+(* strong_signal : Function that restarts the heart, i.e. reset to default 60 BPM *)
 
 
 
 
 (*------------------PACEMAKER AXIOMS------------------*)
 
-(* Function that adds 1 to artificial BPM if abnormal BPM *)
