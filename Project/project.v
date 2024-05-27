@@ -52,6 +52,7 @@ Notation "x > y" := (grbnat x y).
 
 Definition bpm_lower_limit : nat := 60.
 Definition bpm_upper_limit : nat := 100.
+Definition bpm_default : nat := 70.
 
 Inductive beat_type : Type :=
     | artificial
@@ -72,11 +73,11 @@ Definition actual_bpm (b1 b2 : beat_type_bpm) : nat :=
 
 (*------------------HEART FUNCTIONS------------------*)
 
-(* need_pace : Function that returns TRUE if actual BPM is <60 -- meaning abnormal *)
+(* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
 Definition need_pace (b1 b2 : beat_type_bpm) : bool :=
     (actual_bpm b1 b2) <= bpm_lower_limit.
 
-(* need_restart : Function that returns TRUE if actual BPM is >100 or natural BPM is 0 -- meaning needs restarting *)
+(* need_restart : Function that returns TRUE if actual BPM is above limit or natural BPM is 0 -- meaning needs restarting *)
 Definition need_restart (b1 b2 : beat_type_bpm) : bool :=
     let bpm1 :=
         match b1 with
@@ -114,7 +115,7 @@ Definition need_restart (b1 b2 : beat_type_bpm) : bool :=
 
 (* signal_weak : Function that adds 1 to artificial BPM if abnormal BPM *)
 
-(* signal_strong : Function that restarts the heart, i.e. reset to default 60 BPM *)
+(* signal_strong : Function that restarts the heart, i.e. reset to default BPM *)
 
 
 
