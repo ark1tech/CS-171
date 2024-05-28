@@ -56,14 +56,10 @@ Inductive beat_type : Type :=
     | artificial
     | natural.
 
-Inductive strength_type : Type :=
-    | weak
-    | strong.
-
 Inductive beat : Type :=
     | I (b : beat_type) (n : nat).
 
-(* Definition that returns actual BPM from natural + artificial *)
+(* actual_bpm : returns actual BPM from natural + artificial, only if different_beat_type is true *)
 Definition actual_bpm (b1 b2 : beat) : nat :=
     match b1, b2 with
     | I _ n1, I _ n2 => n1 + n2
@@ -71,27 +67,39 @@ Definition actual_bpm (b1 b2 : beat) : nat :=
 
 (*------------------HEART FUNCTIONS------------------*)
 
+(* axiom to ensure actual BPM is only solved using natural BPM + artificial BPM *)
+Axiom valid_actual_bpm : forall (b1 b2 : beat),
+    match b1, b2 with
+    | I natural _, I artificial _ => True
+    | I artificial _, I natural _ => True
+    | _, _ => False
+    end.
+
 (* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
 Definition need_pace (b1 b2 : beat) : bool :=
-    (actual_bpm b1 b2) <= bpm_lower_limit.
+    if valid_actual_bpm b1 b2 then
+        (actual_bpm b1 b2) <= bpm_lower_limit
+    else
+        false.
 
 (* need_restart : Function that returns TRUE if actual BPM is above limit or natural BPM is 0 -- meaning needs restarting *)
 Definition need_restart (b1 b2 : beat) : bool :=
-    let bpm1 :=
-        match b1 with
-        | I natural n1 => n1
-        | I artificial _ => 1
-        end in
-    let bpm2 :=
-        match b2 with
-        | I natural n2 => n2
-        | I artificial _ => 1
-        end in
-    (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
+    if valid_actual_bpm b1 b2 then
+        let bpm1 :=
+            match b1 with
+            | I natural n1 => n1
+            | I artificial _ => 1
+            end in
+        let bpm2 :=
+            match b2 with
+            | I natural n2 => n2
+            | I artificial _ => 1
+            end in
+        (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0)
+    else
+        false.
 
 (*------------------HEART AXIOMS------------------*)
-
-(* Actual BPM can only be solved using natural BPM + artificial BPM *)
 
 (* If beat type is not natural, it is artificial *)
 Axiom ax_natural_artificial : forall b : beat,
@@ -108,22 +116,6 @@ Axiom ax_artificial_natural : forall b : beat,
     end.
 
 
-(*------------------HEART PROPERTIES------------------*)
-
-(* If artificial BPM is 40, then need_restart is TRUE *)
-
-(* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
-
-(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
-Theorem abnormal_bpm : forall b1 b2,
-    match b with
-    | 
-
-(* If BPM is normal, then need_pace and need_restart is FALSE *)
-Theorem normal_bpm : forall b,
-    .
-
-
 (*------------------PACEMAKER FUNCTIONS------------------*)
 
 (* signal_weak : Function that adds 1 to artificial BPM if abnormal BPM *)
@@ -132,6 +124,21 @@ Theorem normal_bpm : forall b,
 
 
 
-
 (*------------------PACEMAKER AXIOMS------------------*)
 
+
+(*------------------PACEMAKER PROPERTIES------------------*)
+
+(* If artificial BPM is 40, then need_restart is TRUE *)
+
+(* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
+
+(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
+Theorem abnormal_bpm : forall b1 b2,
+    match actual_bpm b1 b2 with
+    | 
+    end.
+
+(* If BPM is normal, then need_pace and need_restart is FALSE *)
+Theorem normal_bpm : forall b,
+    .
