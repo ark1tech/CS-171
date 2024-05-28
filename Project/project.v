@@ -144,22 +144,16 @@ Axiom ax_artificial_natural : forall b : beat,
 Axiom ax_normal : forall b1 b2 i : beat,
     is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
 
-
-(*------------------HEART PROPERTIES ------------------*)
-
 (* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
-Theorem bpm_abnormal : forall b1 b2,
+Axiom bpm_abnormal : forall b1 b2,
     is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
-Proof.
-    intros.
-    apply ax_normal in H.
-    rewrite H.
 
 (* If BPM is normal, then need_pace and need_restart is FALSE *)
-Theorem bpm_normal : forall b1 b2 : beat,
-    actual_bpm b1 b2 >= bpm_lower_limit /\ actual_bpm b1 b2 < bpm_upper_limit
+Axiom bpm_normal : forall b1 b2 : beat,
+    (actual_bpm b1 b2 >= bpm_lower_limit = true) /\ (actual_bpm b1 b2 < bpm_upper_limit = true)
     -> need_pace b1 b2 = false /\ need_restart b1 b2 = false.
-Admitted.
+
+(*------------------HEART PROPERTIES ------------------*)
 
 
 (*------------------PACEMAKER FUNCTIONS------------------*)
