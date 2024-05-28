@@ -141,16 +141,14 @@ Axiom ax_artificial_natural : forall b : beat,
         -> bt = natural
     end.
 
-Axiom ax_normal : forall b1 b2 i : beat,
-    is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
-
 (* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
 Axiom bpm_abnormal : forall b1 b2,
-    is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
+    is_normal b1 b2 = false
+    -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
 
 (* If BPM is normal, then need_pace and need_restart is FALSE *)
 Axiom bpm_normal : forall b1 b2 : beat,
-    (actual_bpm b1 b2 >= bpm_lower_limit = true) /\ (actual_bpm b1 b2 < bpm_upper_limit = true)
+    (actual_bpm b1 b2 >= bpm_lower_limit) && (actual_bpm b1 b2 < bpm_upper_limit) = true
     -> need_pace b1 b2 = false /\ need_restart b1 b2 = false.
 
 (*------------------HEART PROPERTIES ------------------*)
@@ -182,7 +180,8 @@ Axiom artificial_lowerlimit_restart : forall n1 n2 : nat,
 (* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
 Axiom natural_zero_pace_restart : forall n1 n2 : nat,
     n1 =? 0 = true
-    -> need_restart (I natural n1) (I artificial n2) = true.
+    -> need_restart (I natural n1) (I artificial n2) = true
+        /\ need_pace (I natural n1) (I artificial n2) = true.
 
 Axiom asdfasdf : forall b1 b2: beat, 
     need_restart b1 b2 = true /\ (actual_bpm b1 b2 =? 0) = false -> is_normal (I natural 0) (I artificial 1) = false. 
@@ -198,24 +197,30 @@ Axiom asdfasdf : forall b1 b2: beat,
 Theorem bpm_P_pace : forall b1 b2 : beat,
     (need_restart b1 b2 = true) /\ (actual_bpm b1 b2 =? 0 = false)
     -> (actual_bpm b1 b2 + 1) >= bpm_upper_limit = true.
-Proof.
+Admitted.
+(* Proof.
     intros.
     apply asdfasdf in H. 
-Qed.
-(* -> is_normal (I natural (actual_bpm b1 b2 + 1)) (I artificial 0) = false. *)
+Qed. *)
 
 (* If BPM 0, then BPM+1 does not need restart *)
 Theorem bpm_0_restart : forall b1 b2 : beat,
     actual_bpm b1 b2 =? 0 = true
     -> need_restart b1 b2 = true
     -> need_restart b1 b2 = false.
-Proof.
-    intros.
-    
-    
-
+Admitted.
 
 (* -> match b1, b2 with
     | I t1 n1, I t2 n2
         => need_restart (I t1 n1) (I t2 (n2+1)) = false
     end. *)
+
+(* BPM 0 still needs pace *)
+Theorem zero_pace : forall n1 n2 : nat,
+    n1 =? 0 = true
+    -> need_pace (I natural n1) (I artificial n2) = true.
+Proof.
+    intros.
+    apply natural_zero_pace_restart.
+    apply H.
+Qed.
