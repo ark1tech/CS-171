@@ -79,9 +79,6 @@ Definition actual_bpm (b1 b2 : beat) : nat :=
 
 (*------------------HEART FUNCTIONS------------------*)
 
-(* axiom to ensure actual BPM is only solved using natural BPM + artificial BPM *)
-
-
 (* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
 Definition need_pace (b1 b2 : beat) : bool :=
     (actual_bpm b1 b2) <= bpm_lower_limit.
