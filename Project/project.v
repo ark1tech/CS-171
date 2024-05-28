@@ -182,23 +182,23 @@ Definition signal_strong (b1 b2 : beat) : bool :=
 
 (* If artificial BPM is greater than or equal to lower limit, then need_restart is TRUE *)
 Axiom artificial_lowerlimit_restart : forall n1 n2 : nat,
-    n2 >= bpm_lower_limit
+    n2 >= bpm_lower_limit = true
     -> need_restart (I natural n1) (I artificial n2) = true.
+
+(* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
+Axiom natural_zero_pace_restart : forall n1 n2 : nat,
+    n1 =? 0 = true
+    -> need_restart (I natural n1) (I artificial n2) = true.
+
 
 (*------------------PACEMAKER PROPERTIES------------------*)
 
-(* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
-Theorem natural_zero_pace_restart : forall n1 n2 : nat,
-    n1 =? 0 = true
-    -> need_restart (I natural n1) (I artificial n2) = true.
-Proof.
-    intros.
-    destruct n1.
-    - induction n2.
-        + reflexivity.
-        + 
-    - induction n2.
-        + 
-Qed.
-(* Admitted. *)
+(* If need_pace, then BPM-1 still needs pace *)
+Theorem bpm_S_restart : forall b1 b2 : beat,
+    .
+
+(* If need_restart and BPM != 0, then BPM+1 is still abnormal *)
+Theorem bpm_P_pace : forall b1 b2 : beat,
+    (need_restart b1 b2 = true) && (actual_bpm b1 b2 =? 0 = false)
+    -> (actual_bpm b1 b2 + 1) .
 
