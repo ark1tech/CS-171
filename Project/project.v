@@ -184,15 +184,38 @@ Axiom natural_zero_pace_restart : forall n1 n2 : nat,
     n1 =? 0 = true
     -> need_restart (I natural n1) (I artificial n2) = true.
 
+Axiom asdfasdf : forall b1 b2: beat, 
+    need_restart b1 b2 = true /\ (actual_bpm b1 b2 =? 0) = false -> is_normal (I natural 0) (I artificial 1) = false. 
+
 
 (*------------------PACEMAKER PROPERTIES------------------*)
 
 (* If need_pace, then BPM-1 still needs pace *)
-Theorem bpm_S_restart : forall b1 b2 : beat,
-    .
+(* Theorem bpm_S_restart : forall b1 b2 : beat,
+    . *)
 
 (* If need_restart and BPM != 0, then BPM+1 is still abnormal *)
 Theorem bpm_P_pace : forall b1 b2 : beat,
-    (need_restart b1 b2 = true) && (actual_bpm b1 b2 =? 0 = false)
-    -> (actual_bpm b1 b2 + 1) .
+    (need_restart b1 b2 = true) /\ (actual_bpm b1 b2 =? 0 = false)
+    -> (actual_bpm b1 b2 + 1) >= bpm_upper_limit = true.
+Proof.
+    intros.
+    apply asdfasdf in H. 
+Qed.
+(* -> is_normal (I natural (actual_bpm b1 b2 + 1)) (I artificial 0) = false. *)
 
+(* If BPM 0, then BPM+1 does not need restart *)
+Theorem bpm_0_restart : forall b1 b2 : beat,
+    actual_bpm b1 b2 =? 0 = true
+    -> need_restart b1 b2 = true
+    -> need_restart b1 b2 = false.
+Proof.
+    intros.
+    
+    
+
+
+(* -> match b1, b2 with
+    | I t1 n1, I t2 n2
+        => need_restart (I t1 n1) (I t2 (n2+1)) = false
+    end. *)
