@@ -70,8 +70,17 @@ Inductive beat_type : Type :=
 Inductive beat : Type :=
     | I (b : beat_type) (n : nat).
 
+Definition is_artificial (b : beat) : bool :=
+    match b with
+    | I artificial _ => true
+    | _ => false
+    end.
 
-(*------------------HEART FUNCTIONS------------------*)
+Definition is_natural (b : beat) : bool :=
+    match b with
+    | I natural _ => true
+    | _ => false
+    end.
 
 (* Return TRUE if opposing beat types -- meaning actual BPM can be solved *)
 Definition valid_beat_pair (b1 b2 : beat) : bool :=
@@ -173,17 +182,25 @@ Definition signal_strong (b1 b2 : beat) : bool :=
 
 (*------------------PACEMAKER AXIOMS------------------*)
 
+(* If artificial BPM is greater than or equal to lower limit, then need_restart is TRUE *)
+Axiom artificial_lowerlimit_restart : forall n1 n2 : nat,
+    n2 >= bpm_lower_limit
+    -> need_restart (I natural n1) (I artificial n2) = true.
 
 (*------------------PACEMAKER PROPERTIES------------------*)
 
-(* If artificial BPM is equal to lower limit, then need_restart is TRUE *)
-Theorem artificial_lowerlimit_restart : forall b2 : beat,
-    match b2 with
-    | I artificial b2 =>
-    .
-Admitted.
-
 (* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
-Theorem natural_zero_pace_restart : forall b1 : beat,
-
+Theorem natural_zero_pace_restart : forall n1 n2 : nat,
+    n1 =? 0 = true
+    -> need_restart (I natural n1) (I artificial n2) = true.
+Proof.
+    intros.
+    destruct n1.
+    - induction n2.
+        + reflexivity.
+        + 
+    - induction n2.
+        + 
+Qed.
+(* Admitted. *)
 
