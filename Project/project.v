@@ -27,12 +27,23 @@ Fixpoint grbnat (n m : nat) : bool :=
         end
     end.
 
+Definition ltb (n m : nat) : bool := 
+    match eqb n m with
+    | true => false
+    | false => leb n m
+    end.
+
+Definition geqnat (m n : nat) : bool := (ltb m n) || (m =? n).
+
+
 Notation "x :: y" := (cons x y) (at level 60, right associativity).
 Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y []) ..).
 Notation "x ++ y" := (app x y) (at level 60, right associativity).
 Notation "x <= y" := (lebnat x y).
+Notation "x >= y" := (geqnat x y).
 Notation "x > y" := (grbnat x y).
+Notation "x < y" := (ltb x y).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
     A sick client wants you to make an app that maintains a normal heart rate.
@@ -59,6 +70,9 @@ Inductive beat_type : Type :=
 Inductive beat : Type :=
     | I (b : beat_type) (n : nat).
 
+
+(*------------------HEART FUNCTIONS------------------*)
+
 (* Return TRUE if opposing beat types -- meaning actual BPM can be solved *)
 Definition valid_beat_pair (b1 b2 : beat) : bool :=
     match b1, b2 with
@@ -75,9 +89,6 @@ Definition actual_bpm (b1 b2 : beat) : nat :=
         end
     else
         0.
-
-
-(*------------------HEART FUNCTIONS------------------*)
 
 (* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
 Definition need_pace (b1 b2 : beat) : bool :=
@@ -97,6 +108,13 @@ Definition need_restart (b1 b2 : beat) : bool :=
         end in
     (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
 
+Definition is_normal (b1 b2 : beat) : bool :=
+    if actual_bpm b1 b2 >= bpm_lower_limit  
+        then if actual_bpm b1 b2 <= bpm_lower_limit  
+            then true
+        else false 
+    else 
+        false.
 
 (*------------------HEART AXIOMS------------------*)
 
@@ -118,10 +136,17 @@ Axiom ax_artificial_natural : forall b : beat,
 (*------------------HEART PROPERTIES ------------------*)
 
 (* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
-Theorem bpm_abnormal : forall b1 b2 : beat,
-    actual_bpm b1 b2 < bpm_lower_limit \/ actual_bpm b1 b2 >= bpm_upper_limit
-    -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
-Admitted.
+Theorem bpm_abnormal : forall b1 b2,
+    is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
+Proof.
+    intros.
+    destruct b1. 
+    destruct b. 
+    destruct b2.
+    destruct b.
+    -
+
+
 
 (* If BPM is normal, then need_pace and need_restart is FALSE *)
 Theorem bpm_normal : forall b1 b2 : beat,
