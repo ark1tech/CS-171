@@ -96,6 +96,7 @@ Definition need_restart (b1 b2 : beat) : bool :=
         | I artificial _ => 1
         end in
     (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
+(* ---> AYUSIN MO MAMAYA *)
 
 
 (*------------------HEART AXIOMS------------------*)
@@ -132,7 +133,11 @@ Admitted.
 
 (*------------------PACEMAKER FUNCTIONS------------------*)
 
-(* signal_weak : Function that adds 1 to artificial BPM if needs to  *)
+(* signal_weak : Function that adds 1 to artificial BPM if need_pace is TRUE *)
+Definition signal_weak (b1 b2 : beat) : bool :=
+    if valid_beat_pair b1 b2 || need_pace b1 b2
+        then true
+    else false.
 
 
 (* signal_strong : Function that restarts the heart, i.e. reset to default BPM *)
