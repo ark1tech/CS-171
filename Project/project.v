@@ -62,11 +62,11 @@ Inductive strength_type : Type :=
     | weak
     | strong.
 
-Inductive beat_type_bpm : Type :=
+Inductive beat : Type :=
     | I (b : beat_type) (n : nat).
 
 (* Definition that returns actual BPM from natural + artificial *)
-Definition actual_bpm (b1 b2 : beat_type_bpm) : nat :=
+Definition actual_bpm (b1 b2 : beat) : nat :=
     match b1, b2 with
     | I _ n1, I _ n2 => n1 + n2
     end.
@@ -74,11 +74,11 @@ Definition actual_bpm (b1 b2 : beat_type_bpm) : nat :=
 (*------------------HEART FUNCTIONS------------------*)
 
 (* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
-Definition need_pace (b1 b2 : beat_type_bpm) : bool :=
+Definition need_pace (b1 b2 : beat) : bool :=
     (actual_bpm b1 b2) <= bpm_lower_limit.
 
 (* need_restart : Function that returns TRUE if actual BPM is above limit or natural BPM is 0 -- meaning needs restarting *)
-Definition need_restart (b1 b2 : beat_type_bpm) : bool :=
+Definition need_restart (b1 b2 : beat) : bool :=
     let bpm1 :=
         match b1 with
         | I natural n1 => n1
@@ -96,14 +96,14 @@ Definition need_restart (b1 b2 : beat_type_bpm) : bool :=
 (* Actual BPM can only be solved using natural BPM + artificial BPM *)
 
 (* If beat type is not natural, it is artificial *)
-Axiom ax_natural_artificial : forall b : beat_type_bpm,
+Axiom ax_natural_artificial : forall b : beat,
     match b with
     | I bt _ => bt <> natural
         -> bt = artificial
     end.
 
 (* Vice versa*)
-Axiom ax_artificial_natural : forall b : beat_type_bpm,
+Axiom ax_artificial_natural : forall b : beat,
     match b with
     | I bt _ => bt <> artificial
         -> bt = natural
