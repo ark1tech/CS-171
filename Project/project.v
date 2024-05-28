@@ -151,7 +151,14 @@ Definition signal_strong (b1 b2 : beat) : bool :=
 
 (*------------------PACEMAKER PROPERTIES------------------*)
 
-(* If artificial BPM is 40, then need_restart is TRUE *)
+(* If artificial BPM is equal to lower limit, then need_restart is TRUE *)
+Theorem artificial_lowerlimit_restart : forall b2 : beat,
+    match b2 with
+    | I artificial b2 =>
+    .
+Admitted.
 
 (* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
+Theorem natural_zero_pace_restart : forall b1 : beat,
+
 
