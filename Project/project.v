@@ -67,7 +67,7 @@ Definition valid_beat_pair (b1 b2 : beat) : bool :=
     | I _ n1, I _ n2 => false
     end.
 
-(* actual_bpm : returns actual BPM from natural + artificial, only if different_beat_type is true *)
+(* actual_bpm : returns actual BPM from natural + artificial, only if valid_beat_pair is true ---> MIGHT BE FAULTY *)
 Definition actual_bpm (b1 b2 : beat) : nat :=
     if valid_beat_pair b1 b2 then
         match b1, b2 with
@@ -75,7 +75,7 @@ Definition actual_bpm (b1 b2 : beat) : nat :=
         end
     else
         0.
-(* ---> MIGHT BE FAULTY *)
+
 
 (*------------------HEART FUNCTIONS------------------*)
 
@@ -97,6 +97,7 @@ Definition need_restart (b1 b2 : beat) : bool :=
         end in
     (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
 
+
 (*------------------HEART AXIOMS------------------*)
 
 (* If beat type is not natural, it is artificial *)
@@ -114,9 +115,25 @@ Axiom ax_artificial_natural : forall b : beat,
     end.
 
 
+(*------------------HEART PROPERTIES ------------------*)
+
+(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
+Theorem bpm_abnormal : forall b1 b2 : beat,
+    actual_bpm b1 b2 < bpm_lower_limit \/ actual_bpm b1 b2 >= bpm_upper_limit
+    -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
+Admitted.
+
+(* If BPM is normal, then need_pace and need_restart is FALSE *)
+Theorem bpm_normal : forall b1 b2 : beat,
+    actual_bpm b1 b2 >= bpm_lower_limit /\ actual_bpm b1 b2 < bpm_upper_limit
+    -> need_pace b1 b2 = false /\ need_restart b1 b2 = false.
+Admitted.
+
+
 (*------------------PACEMAKER FUNCTIONS------------------*)
 
-(* signal_weak : Function that adds 1 to artificial BPM if abnormal BPM *)
+(* signal_weak : Function that adds 1 to artificial BPM if needs to  *)
+
 
 (* signal_strong : Function that restarts the heart, i.e. reset to default BPM *)
 
@@ -131,12 +148,3 @@ Axiom ax_artificial_natural : forall b : beat,
 
 (* If natural BPM is 0, then both need_pace and need_restart is TRUE *)
 
-(* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
-Theorem abnormal_bpm : forall b1 b2,
-    match actual_bpm b1 b2 with
-    | 
-    end.
-
-(* If BPM is normal, then need_pace and need_restart is FALSE *)
-Theorem normal_bpm : forall b,
-    .
