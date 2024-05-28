@@ -59,45 +59,46 @@ Inductive beat_type : Type :=
 Inductive beat : Type :=
     | I (b : beat_type) (n : nat).
 
+(* Return TRUE if opposing beat types -- meaning actual BPM can be solved *)
+Definition valid_beat_pair (b1 b2 : beat) : bool :=
+    match b1, b2 with
+    | I artificial n1, I natural n2 => true
+    | I natural n1, I artificial n2 => true
+    | I _ n1, I _ n2 => false
+    end.
+
 (* actual_bpm : returns actual BPM from natural + artificial, only if different_beat_type is true *)
 Definition actual_bpm (b1 b2 : beat) : nat :=
-    match b1, b2 with
-    | I _ n1, I _ n2 => n1 + n2
-    end.
+    if valid_beat_pair b1 b2 then
+        match b1, b2 with
+        | I _ n1, I _ n2 => n1 + n2
+        end
+    else
+        0.
+(* ---> MIGHT BE FAULTY *)
 
 (*------------------HEART FUNCTIONS------------------*)
 
 (* axiom to ensure actual BPM is only solved using natural BPM + artificial BPM *)
-Axiom valid_actual_bpm : forall (b1 b2 : beat),
-    match b1, b2 with
-    | I natural _, I artificial _ => True
-    | I artificial _, I natural _ => True
-    | _, _ => False
-    end.
+
 
 (* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
 Definition need_pace (b1 b2 : beat) : bool :=
-    if valid_actual_bpm b1 b2 then
-        (actual_bpm b1 b2) <= bpm_lower_limit
-    else
-        false.
+    (actual_bpm b1 b2) <= bpm_lower_limit.
 
 (* need_restart : Function that returns TRUE if actual BPM is above limit or natural BPM is 0 -- meaning needs restarting *)
 Definition need_restart (b1 b2 : beat) : bool :=
-    if valid_actual_bpm b1 b2 then
-        let bpm1 :=
-            match b1 with
-            | I natural n1 => n1
-            | I artificial _ => 1
-            end in
-        let bpm2 :=
-            match b2 with
-            | I natural n2 => n2
-            | I artificial _ => 1
-            end in
-        (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0)
-    else
-        false.
+    let bpm1 :=
+        match b1 with
+        | I natural n1 => n1
+        | I artificial _ => 1
+        end in
+    let bpm2 :=
+        match b2 with
+        | I natural n2 => n2
+        | I artificial _ => 1
+        end in
+    (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
 
 (*------------------HEART AXIOMS------------------*)
 
