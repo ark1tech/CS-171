@@ -35,7 +35,6 @@ Notation "x <= y" := (lebnat x y).
 Notation "x > y" := (grbnat x y).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
-
     A sick client wants you to make an app that maintains a normal heart rate.
     The normal heart rate is 60 to 100 BPM.
 
@@ -45,7 +44,6 @@ Notation "x > y" := (grbnat x y).
     2) Any time the heart rate goes below this limit, a weak electrical signal is produced to create an artificial heart beat to compensate.
     3) If the heart rate goes above this limit, a strong electrical signal is produced to restart the heart's rhythm.
     4) If there is no natural heartbeat detected within the last 60 seconds, a strong electrical signal is produced to restart the heart's rhythm.
-
 *)
 
 (*------------------DEFINITIONS------------------*)
