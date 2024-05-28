@@ -89,6 +89,10 @@ Definition is_natural (b : beat) : bool :=
     | I _ n1, I _ n2 => false
     end. *)
 
+(* Compute(valid_beat_pair (I artificial 0) (I artificial 0)).
+Compute(valid_beat_pair (I artificial 0) (I natural 0)).
+Compute(valid_beat_pair (I natural 0) (I artificial 0)). *)
+
 (* actual_bpm : returns actual BPM from natural + artificial, only if valid_beat_pair is true ---> MIGHT BE FAULTY *)
 Definition actual_bpm (b1 b2 : beat) : nat :=
     if valid_beat_pair b1 b2 then
@@ -96,11 +100,19 @@ Definition actual_bpm (b1 b2 : beat) : nat :=
         | I _ n1, I _ n2 => n1 + n2
         end
     else
-        0.
+        O.
+
+Compute(actual_bpm (I natural 10) (I artificial 30)).
+Compute(actual_bpm (I natural 30) (I natural 20)).
 
 (* need_pace : Function that returns TRUE if actual BPM is below limit -- meaning abnormal *)
 Definition need_pace (b1 b2 : beat) : bool :=
     (actual_bpm b1 b2) <= bpm_lower_limit.
+
+
+(* Compute(need_pace (I natural 10) (I artificial 30)).
+Compute(need_pace (I natural 50) (I artificial 30)). *)
+
 
 (* need_restart : Function that returns TRUE if actual BPM is above limit or natural BPM is 0 -- meaning needs restarting *)
 Definition need_restart (b1 b2 : beat) : bool :=
@@ -116,13 +128,22 @@ Definition need_restart (b1 b2 : beat) : bool :=
         end in
     (actual_bpm b1 b2 > bpm_upper_limit) || (bpm1 =? 0) || (bpm2 =? 0).
 
+Compute(need_restart (I natural 0) (I artificial 0)).
+Compute(need_restart (I natural 50) (I artificial 51)). 
+Compute(need_restart (I natural 10) (I artificial 20)). 
+    
+
 Definition is_normal (b1 b2 : beat) : bool :=
-    if actual_bpm b1 b2 >= bpm_lower_limit  
-        then if actual_bpm b1 b2 <= bpm_lower_limit  
-            then true
-        else false 
+    if (actual_bpm b1 b2) >= bpm_lower_limit  
+        then if (actual_bpm b1 b2) <= bpm_upper_limit  
+            then false
+        else true 
     else 
-        false.
+        true.
+
+Compute(is_normal (I natural 50) (I artificial 30)).
+Compute(is_normal (I natural 50) (I artificial 20)).
+Compute(is_normal (I natural 10) (I artificial 10)).
 
 (*------------------HEART AXIOMS------------------*)
 
