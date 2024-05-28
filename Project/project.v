@@ -141,6 +141,9 @@ Axiom ax_artificial_natural : forall b : beat,
         -> bt = natural
     end.
 
+Axiom ax_normal : forall b1 b2 i : beat,
+    is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
+
 
 (*------------------HEART PROPERTIES ------------------*)
 
@@ -149,13 +152,8 @@ Theorem bpm_abnormal : forall b1 b2,
     is_normal b1 b2 = false -> need_pace b1 b2 = true \/ need_restart b1 b2 = true.
 Proof.
     intros.
-    destruct b1. 
-    destruct b. 
-    destruct b2.
-    destruct b.
-    -
-
-
+    apply ax_normal in H.
+    rewrite H.
 
 (* If BPM is normal, then need_pace and need_restart is FALSE *)
 Theorem bpm_normal : forall b1 b2 : beat,
