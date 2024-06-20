@@ -45,15 +45,10 @@ Definition is_normal (p : heartrate) : bool :=
   (B_total p >= l_lower) && (B_total p <= l_upper).
 
 Definition need_pace (p : heartrate) : bool :=
-  (B_total p) <= l_lower.
+  (B_total p) < l_lower.
 
 Definition need_restart (p : heartrate) : bool :=
-  if B_total p == 0
-    then true
-  else if B_total p >= l_upper
-    then true
-  else
-    false.
+  (B_total p == 0) || (B_total p > l_upper).
 
 Definition signal_weak (p : heartrate) : bool :=
   need_pace p.
