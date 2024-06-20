@@ -28,23 +28,19 @@ Definition l_lower : nat := 40.
 Definition l_upper : nat := 200.
 
 Inductive heartrate : Type := pair (ba bn : nat).
+
 Notation "( bn , ba )" := (pair bn ba).
 
 (*------------------FUNCTIONS------------------*)
 Definition B_nat (p : heartrate) : nat :=
-  match p with
-  | (bn,ba) => bn
-  end.
+  match p with | (bn,ba) => bn end.
 
 Definition B_art (p : heartrate) : nat :=
-  match p with
-  | (bn,ba) => ba
-  end.
+  match p with | (bn,ba) => ba end.
 
 Definition B_total (p : heartrate) : nat :=
   (B_nat p) + (B_art p).
 
-(* is_normal() *)
 Definition is_normal (p : heartrate) : bool :=
   if B_total p >= l_lower
     then if B_total p <= l_upper 
@@ -53,11 +49,9 @@ Definition is_normal (p : heartrate) : bool :=
   else 
       false.
 
-(* need_pace() *)
 Definition need_pace (p : heartrate) : bool :=
   (B_total p) <= l_lower.
 
-(* need_restart() *)
 Definition need_restart (p : heartrate) : bool :=
   if B_total p == 0
     then true
@@ -65,3 +59,12 @@ Definition need_restart (p : heartrate) : bool :=
     then true
   else
     false.
+
+Definition signal_weak (p : heartrate) : bool :=
+  need_pace p.
+
+Definition signal_strong (p : heartrate) : bool :=
+  need_restart p.
+
+(*------------------FUNCTIONS------------------*)
+
