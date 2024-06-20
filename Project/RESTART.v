@@ -10,7 +10,6 @@ Notation "x <= y" := (Nat.leb x y).
 Notation "x >= y" := (Nat.leb y x).
 Notation "x > y" := (Nat.ltb y x).
 Notation "x < y" := (Nat.ltb x y).
-Notation "x == y" := (Nat.eqb x y) (at level 60, right associativity).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
     A sick client wants you to make an app that maintains a normal heart rate.
@@ -48,7 +47,7 @@ Definition need_pace (p : heartrate) : bool :=
   (B_total p) < l_lower.
 
 Definition need_restart (p : heartrate) : bool :=
-  (B_total p == 0) || (B_total p > l_upper).
+  (B_total p =? 0) || (B_total p > l_upper).
 
 Definition signal_weak (p : heartrate) : bool :=
   need_pace p.
@@ -57,4 +56,6 @@ Definition signal_strong (p : heartrate) : bool :=
   need_restart p.
 
 (*------------------AXIOMS------------------*)
-
+Axiom bpm_abnormal : forall p,
+    is_normal p = false
+    -> (need_pace p = true) \/ (need_restart p = true).
