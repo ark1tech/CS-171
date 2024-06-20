@@ -51,7 +51,8 @@ Definition bpm_lower_limit : nat := 40.
 Definition bpm_upper_limit : nat := 200.
 Definition bpm_default : nat := 70.
 
-Inductive beat_type : Type :=
+(* !!!~~~ COMMENTED OUT == OBSOLETE ~~~!!! *)
+(* Inductive beat_type : Type :=
     | artificial
     | natural.
 
@@ -68,15 +69,15 @@ Definition is_natural (b : beat) : bool :=
     match b with
     | I natural _ => true
     | _ => false
-    end.
+    end. *)
 
 (* Return TRUE if opposing beat types -- meaning actual BPM can be solved *)
-Definition valid_beat_pair (b1 b2 : beat) : bool :=
+(* Definition valid_beat_pair (b1 b2 : beat) : bool :=
     match b1, b2 with
     | I artificial n1, I natural n2 => true
     | I natural n1, I artificial n2 => true
     | I _ n1, I _ n2 => false
-    end.
+    end. *)
 
 (* actual_bpm : returns actual BPM from natural + artificial, only if valid_beat_pair is true ---> MIGHT BE FAULTY *)
 Definition actual_bpm (b1 b2 : beat) : nat :=
@@ -115,19 +116,19 @@ Definition is_normal (b1 b2 : beat) : bool :=
 
 (*------------------HEART AXIOMS------------------*)
 
-(* If beat type is not natural, it is artificial *)
+(* If beat type is not natural, it is artificial
 Axiom ax_natural_artificial : forall b : beat,
     match b with
     | I bt _ => bt <> natural
         -> bt = artificial
-    end.
+    end. *)
 
 (* Vice versa*)
-Axiom ax_artificial_natural : forall b : beat,
+(* Axiom ax_artificial_natural : forall b : beat,
     match b with
     | I bt _ => bt <> artificial
         -> bt = natural
-    end.
+    end. *)
 
 (* If BPM is not normal, then need_pace is TRUE or need_restart is TRUE *)
 Axiom bpm_abnormal : forall b1 b2,
