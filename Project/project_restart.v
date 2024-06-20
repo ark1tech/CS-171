@@ -6,6 +6,11 @@ From Coq Require Import Arith.EqNat. Import Nat.
 From Coq Require Import Lia.
 From Coq Require Import Lists.List. Import ListNotations.
 
+Notation "x <= y" := (Nat.leb x y).
+Notation "x >= y" := (Nat.ltb y x).
+Notation "x > y" := (Nat.leb y x).
+Notation "x < y" := (Nat.ltb x y).
+
 (*------------------USE CASE FOR PACEMAKER ------------------
     A sick client wants you to make an app that maintains a normal heart rate.
     The normal heart rate is 60 to 100 BPM.
@@ -22,7 +27,7 @@ Definition l_lower : nat := 40.
 Definition l_upper : nat := 200.
 
 Inductive heartrate : Type := pair (ba bn : nat).
-Notation "( x , y )" := (pair x y).
+Notation "( bn , ba )" := (pair bn ba).
 
 (*------------------FUNCTIONS------------------*)
 Definition B_nat (p : heartrate) : nat :=
@@ -38,3 +43,22 @@ Definition B_art (p : heartrate) : nat :=
 Definition B_total (p : heartrate) : nat :=
   (B_nat p) + (B_art p).
 
+(* is_normal() *)
+Definition is_normal (p : heartrate) : bool :=
+  if B_total p >= l_lower
+    then if B_total p <= l_upper 
+      then true
+    else false 
+  else 
+      false.
+
+(* need_pace() *)
+Definition need_pace (p : heartrate) : bool :=
+  (B_total p) <= l_lower.
+
+(* need_restart() *)
+Definition need_restart (p : heartrate) : bool :=
+  if B_total p = 0
+    then true
+  else
+    false.
