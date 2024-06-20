@@ -42,12 +42,7 @@ Definition B_total (p : heartrate) : nat :=
   (B_nat p) + (B_art p).
 
 Definition is_normal (p : heartrate) : bool :=
-  if B_total p >= l_lower
-    then if B_total p <= l_upper 
-      then true
-    else false 
-  else 
-      false.
+  (B_total p >= l_lower) && (B_total p <= l_upper).
 
 Definition need_pace (p : heartrate) : bool :=
   (B_total p) <= l_lower.
@@ -66,5 +61,5 @@ Definition signal_weak (p : heartrate) : bool :=
 Definition signal_strong (p : heartrate) : bool :=
   need_restart p.
 
-(*------------------FUNCTIONS------------------*)
+(*------------------AXIOMS------------------*)
 
