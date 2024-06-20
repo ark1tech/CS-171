@@ -45,22 +45,10 @@ Notation "x >= y" := (geqnat x y).
 Notation "x > y" := (grbnat x y).
 Notation "x < y" := (ltb x y).
 
-(*------------------USE CASE FOR PACEMAKER ------------------
-    A sick client wants you to make an app that maintains a normal heart rate.
-    The normal heart rate is 60 to 100 BPM.
-
-    App constraints:
-
-    1) The heart's BPM should stay in between a certain threshold, which we define as 60 and 100 (normal heart rate).
-    2) Any time the heart rate goes below this limit, a weak electrical signal is produced to create an artificial heart beat to compensate.
-    3) If the heart rate goes above this limit, a strong electrical signal is produced to restart the heart's rhythm.
-    4) If there is no natural heartbeat detected within the last 60 seconds, a strong electrical signal is produced to restart the heart's rhythm.
-*)
-
 (*------------------DEFINITIONS------------------*)
 
 Definition bpm_lower_limit : nat := 60.
-Definition bpm_upper_limit : nat := 100.
+Definition bpm_upper_limit : nat := 200.
 Definition bpm_default : nat := 70.
 
 Inductive beat_type : Type :=
