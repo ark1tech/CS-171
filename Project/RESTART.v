@@ -7,8 +7,8 @@ From Coq Require Import Lia.
 From Coq Require Import Lists.List. Import ListNotations.
 
 Notation "x <= y" := (Nat.leb x y).
-Notation "x >= y" := (Nat.ltb y x).
-Notation "x > y" := (Nat.leb y x).
+Notation "x >= y" := (Nat.leb y x).
+Notation "x > y" := (Nat.ltb y x).
 Notation "x < y" := (Nat.ltb x y).
 Notation "x == y" := (Nat.eqb x y) (at level 60, right associativity).
 
@@ -60,6 +60,8 @@ Definition need_pace (p : heartrate) : bool :=
 (* need_restart() *)
 Definition need_restart (p : heartrate) : bool :=
   if B_total p == 0
+    then true
+  else if B_total p >= l_upper
     then true
   else
     false.
