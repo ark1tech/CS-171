@@ -10,6 +10,7 @@ Notation "x <= y" := (Nat.leb x y).
 Notation "x >= y" := (Nat.ltb y x).
 Notation "x > y" := (Nat.leb y x).
 Notation "x < y" := (Nat.ltb x y).
+Notation "x == y" := (Nat.eqb x y) (at level 60, right associativity).
 
 (*------------------USE CASE FOR PACEMAKER ------------------
     A sick client wants you to make an app that maintains a normal heart rate.
@@ -58,7 +59,7 @@ Definition need_pace (p : heartrate) : bool :=
 
 (* need_restart() *)
 Definition need_restart (p : heartrate) : bool :=
-  if B_total p = 0
+  if B_total p == 0
     then true
   else
     false.
