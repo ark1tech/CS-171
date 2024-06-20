@@ -47,7 +47,7 @@ Notation "x < y" := (ltb x y).
 
 (*------------------DEFINITIONS------------------*)
 
-Definition bpm_lower_limit : nat := 60.
+Definition bpm_lower_limit : nat := 40.
 Definition bpm_upper_limit : nat := 200.
 Definition bpm_default : nat := 70.
 
