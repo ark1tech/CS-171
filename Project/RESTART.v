@@ -56,6 +56,11 @@ Definition signal_strong (p : heartrate) : bool :=
   need_restart p.
 
 (*------------------AXIOMS------------------*)
-Axiom bpm_abnormal : forall p,
-    is_normal p = false
-    -> (need_pace p = true) \/ (need_restart p = true).
+Axiom axiom1 : forall p,
+  is_normal p = false
+  -> (need_pace p = true) \/ (need_restart p = true).
+
+Axiom axiom2 : forall p,
+  is_normal p = true
+  -> (need_pace p = false) /\ (need_restart p = false).
+
