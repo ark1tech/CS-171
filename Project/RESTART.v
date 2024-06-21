@@ -12,10 +12,8 @@ Notation "x > y" := (Nat.ltb y x).
 Notation "x < y" := (Nat.ltb x y).
 
 (*------------------DEFINITIONS------------------*)
-
 Definition l_lower : nat := 40.
 Definition l_upper : nat := 200.
-
 Inductive heartrate : Type := pair (ba bn : nat).
 
 Notation "( bn , ba )" := (pair bn ba).
@@ -47,24 +45,19 @@ Definition signal_strong (p : heartrate) : bool :=
 
 (*------------------AXIOMS------------------*)
 Axiom axiom1 : forall p : heartrate,
-  is_normal p = false
-  -> (need_pace p = true) \/ (need_restart p = true).
+  is_normal p = false -> (need_pace p = true) \/ (need_restart p = true).
 
 Axiom axiom2 : forall p : heartrate,
-  is_normal p = true
-  -> (need_pace p = false) /\ (need_restart p = false).
+  is_normal p = true -> (need_pace p = false) /\ (need_restart p = false).
 
 Axiom axiom3 : forall p : heartrate,
-  B_total p = 0
-  -> (need_pace p = true) /\ (need_restart p = true).
+  B_total p = 0 -> (need_pace p = true) /\ (need_restart p = true).
 
 Axiom axiom4 : forall p : heartrate,
-  B_art p = 60
-  -> (B_nat p =? 0) = true.
+  B_art p = 60 -> (B_nat p =? 0) = true.
 
 Axiom axiom5 : forall p : heartrate,
-  B_art p = 0 /\ B_nat p = 0
-  -> B_total p = 0.
+  B_art p = 0 /\ B_nat p = 0 -> B_total p = 0.
 
 (*------------------THEOREMS------------------*)
 Theorem theorem1 : forall p : heartrate,
@@ -77,13 +70,14 @@ Theorem theorem2 : forall p : heartrate,
   -> signal_strong p = true.
 Proof.
   intros p H.
-  unfold signal_strong, need_restart.
+  unfold signal_strong.
+  unfold need_restart.
   unfold B_total.
 
   (* Prove that B_total p =? 0 = true or l_upper <? B_total p = true *)
   assert (H1: ((B_art p =? 60) || (B_art p > 60) = true)).
   {
-    apply Nat.leb in H.
+    apply Nat.leb_le in H.
     destruct (B_art p) eqn:E.
     - rewrite Nat.eqb_refl in H.
       contradiction.
