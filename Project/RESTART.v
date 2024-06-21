@@ -6,10 +6,13 @@ From Coq Require Import Arith.EqNat. Import Nat.
 From Coq Require Import Lia.
 From Coq Require Import Lists.List. Import ListNotations.
 
-Notation "x <= y" := (Nat.leb x y).
-Notation "x >= y" := (Nat.leb y x).
-Notation "x > y" := (Nat.ltb y x).
-Notation "x < y" := (Nat.ltb x y).
+Notation "x >=? y" := (y <=? x) (at level 70).
+Notation "x >? y" := (y <? x) (at level 70).
+
+Notation "x < y" := (x <? y = true).
+Notation "x <= y" := (x <=? y = true).
+Notation "x > y" := (x >? y = true).
+Notation "x >= y" := (x >=? y = true).
 
 (*------------------DEFINITIONS------------------*)
 Definition l_lower : nat := 40.
@@ -28,16 +31,16 @@ Definition B_total (p : heartrate) : nat :=
   (B_nat p) + (B_art p).
 
 Definition is_normal (p : heartrate) : bool :=
-  (B_total p >= l_lower) && (B_total p <= l_upper).
+  (B_total p >=? l_lower) && (B_total p <=? l_upper).
 
 Definition need_pace (p : heartrate) : bool :=
-  (B_total p) < l_lower.
+  (B_total p) <? l_lower.
 
 Definition need_restart (p : heartrate) : bool :=
-  (B_total p =? 0) || (B_total p > l_upper).
+  (B_total p =? 0) || (B_total p >? l_upper).
 
 Definition signal_weak (p : heartrate) : bool :=
-  (B_nat p) < l_lower.
+  (B_nat p) <? l_lower.
 
 Definition signal_strong (p : heartrate) : bool :=
   need_restart p.
@@ -53,7 +56,7 @@ Axiom axiom3 : forall p : heartrate,
   B_total p = 0 -> (need_pace p = true) /\ (need_restart p = true).
 
 Axiom axiom4 : forall p : heartrate,
-  B_art p = 60 -> (B_nat p =? 0) = true.
+  B_art p = 60 -> B_nat p = 0.
 
 Axiom axiom5 : forall p : heartrate,
   B_art p = 0 /\ B_nat p = 0 -> B_total p = 0.
@@ -78,6 +81,6 @@ Proof.
 Qed.
 
 Theorem theorem2 : forall p : heartrate,
-  (B_art p >= 60) = true
+  B_art p >= 60
   -> signal_strong p = true.
 Admitted.
