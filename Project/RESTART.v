@@ -55,10 +55,59 @@ Axiom axiom2 : forall p : heartrate,
   -> (need_pace p = false) /\ (need_restart p = false).
 
 Axiom axiom3 : forall p : heartrate,
-  (B_total p =? 0) = true
+  B_total p = 0
   -> (need_pace p = true) /\ (need_restart p = true).
 
 Axiom axiom4 : forall p : heartrate,
-  (B_art p >= 60) = true -> (B_nat p =? 0) = true.
+  B_art p = 60
+  -> (B_nat p =? 0) = true.
+
+Axiom axiom5 : forall p : heartrate,
+  B_art p = 0 /\ B_nat p = 0
+  -> B_total p = 0.
 
 (*------------------THEOREMS------------------*)
+Theorem theorem1 : forall p : heartrate,
+  need_pace p = true
+  -> signal_weak p = true.
+Admitted.
+
+Theorem theorem2 : forall p : heartrate,
+  (B_art p >= 60) = true
+  -> signal_strong p = true.
+Proof.
+  intros p H.
+  unfold signal_strong, need_restart.
+  unfold B_total.
+
+  (* Prove that B_total p =? 0 = true or l_upper <? B_total p = true *)
+  assert (H1: ((B_art p =? 60) || (B_art p > 60) = true)).
+  {
+    apply Nat.leb in H.
+    destruct (B_art p) eqn:E.
+    - rewrite Nat.eqb_refl in H.
+      contradiction.
+    - destruct n.
+      + left. apply Nat.leb_le. auto.
+      + right. apply Nat.ltb_lt. simpl. auto.
+  }
+
+  destruct H1 as [H_eq | H_gt].
+  - (* Case 1: B_art p = 60 *)
+    apply Nat.eqb_eq in H_eq.
+    apply axiom4 in H_eq.
+    apply Nat.eqb_eq in H_eq.
+    rewrite H_eq, H_eq.
+    simpl.
+    rewrite Nat.add_0_r.
+    rewrite Nat.eqb_refl.
+    reflexivity.
+
+  - (* Case 2: B_art p > 60 *)
+    unfold B_total.
+    apply Nat.ltb_lt in H_gt.
+    rewrite Nat.eqb_neq in H_gt.
+    rewrite H_gt.
+    simpl.
+    apply orb_true_r.
+Qed.
