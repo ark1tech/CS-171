@@ -15,7 +15,6 @@ Notation "x < y" := (Nat.ltb x y).
 Definition l_lower : nat := 40.
 Definition l_upper : nat := 200.
 Inductive heartrate : Type := pair (ba bn : nat).
-
 Notation "( bn , ba )" := (pair bn ba).
 
 (*------------------FUNCTIONS------------------*)
@@ -63,23 +62,34 @@ Axiom axiom5 : forall p : heartrate,
 Theorem theorem1 : forall p : heartrate,
   need_pace p = true
   -> signal_weak p = true.
-Admitted.
+Proof.
+  intros p H.
+  unfold need_pace in H.
+  unfold signal_weak.
+  unfold B_total in H.
+  unfold B_nat in H.
+  unfold B_art in H.
+  apply Nat.ltb_lt in H.
+  destruct p as [bn ba].
+  simpl in H.
+  simpl.
+  apply Nat.ltb_lt.
+  lia.
+Qed.
 
 Theorem theorem2 : forall p : heartrate,
   (B_art p >= 60) = true
   -> signal_strong p = true.
 Proof.
   intros p H.
-  unfold signal_strong.
-  unfold need_restart.
-  unfold B_total.
+  unfold signal_strong, need_restart, B_total.
 
   (* Prove that B_total p =? 0 = true or l_upper <? B_total p = true *)
   assert (H1: ((B_art p =? 60) || (B_art p > 60) = true)).
   {
     apply Nat.leb_le in H.
     destruct (B_art p) eqn:E.
-    - rewrite Nat.eqb_refl in H.
+    - rewrite Nat.eqb_eq in H.
       contradiction.
     - destruct n.
       + left. apply Nat.leb_le. auto.
