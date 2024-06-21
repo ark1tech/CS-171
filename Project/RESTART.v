@@ -11,16 +11,6 @@ Notation "x >= y" := (Nat.leb y x).
 Notation "x > y" := (Nat.ltb y x).
 Notation "x < y" := (Nat.ltb x y).
 
-(*------------------USE CASE FOR PACEMAKER ------------------
-    A sick client wants you to make an app that maintains a normal heart rate.
-    The normal heart rate is 60 to 100 BPM.
-    App constraints:
-    1) The heart's BPM should stay in between a certain threshold, which we define as 60 and 100 (normal heart rate).
-    2) Any time the heart rate goes below this limit, a weak electrical signal is produced to create an artificial heart beat to compensate.
-    3) If the heart rate goes above this limit, a strong electrical signal is produced to restart the heart's rhythm.
-    4) If there is no natural heartbeat detected within the last 60 seconds, a strong electrical signal is produced to restart the heart's rhythm.
-*)
-
 (*------------------DEFINITIONS------------------*)
 
 Definition l_lower : nat := 40.
@@ -50,17 +40,25 @@ Definition need_restart (p : heartrate) : bool :=
   (B_total p =? 0) || (B_total p > l_upper).
 
 Definition signal_weak (p : heartrate) : bool :=
-  need_pace p.
+  (B_nat p) < l_lower.
 
 Definition signal_strong (p : heartrate) : bool :=
   need_restart p.
 
 (*------------------AXIOMS------------------*)
-Axiom axiom1 : forall p,
+Axiom axiom1 : forall p : heartrate,
   is_normal p = false
   -> (need_pace p = true) \/ (need_restart p = true).
 
-Axiom axiom2 : forall p,
+Axiom axiom2 : forall p : heartrate,
   is_normal p = true
   -> (need_pace p = false) /\ (need_restart p = false).
 
+Axiom axiom3 : forall p : heartrate,
+  (B_total p =? 0) = true
+  -> (need_pace p = true) /\ (need_restart p = true).
+
+Axiom axiom4 : forall p : heartrate,
+  (B_art p >= 60) = true -> (B_nat p =? 0) = true.
+
+(*------------------THEOREMS------------------*)
