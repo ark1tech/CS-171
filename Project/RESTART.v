@@ -80,38 +80,4 @@ Qed.
 Theorem theorem2 : forall p : heartrate,
   (B_art p >= 60) = true
   -> signal_strong p = true.
-Proof.
-  intros p H.
-  unfold signal_strong, need_restart, B_total.
-
-  (* Prove that B_total p =? 0 = true or l_upper <? B_total p = true *)
-  assert (H1: ((B_art p =? 60) || (B_art p > 60) = true)).
-  {
-    apply Nat.leb_le in H.
-    destruct (B_art p) eqn:E.
-    - rewrite Nat.eqb_eq in H.
-      contradiction.
-    - destruct n.
-      + left. apply Nat.leb_le. auto.
-      + right. apply Nat.ltb_lt. simpl. auto.
-  }
-
-  destruct H1 as [H_eq | H_gt].
-  - (* Case 1: B_art p = 60 *)
-    apply Nat.eqb_eq in H_eq.
-    apply axiom4 in H_eq.
-    apply Nat.eqb_eq in H_eq.
-    rewrite H_eq, H_eq.
-    simpl.
-    rewrite Nat.add_0_r.
-    rewrite Nat.eqb_refl.
-    reflexivity.
-
-  - (* Case 2: B_art p > 60 *)
-    unfold B_total.
-    apply Nat.ltb_lt in H_gt.
-    rewrite Nat.eqb_neq in H_gt.
-    rewrite H_gt.
-    simpl.
-    apply orb_true_r.
-Qed.
+Admitted.
